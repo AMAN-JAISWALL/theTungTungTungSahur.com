@@ -5,7 +5,7 @@ import NightScene from '../components/NightScene.astro';
 import Sahur from '../components/Sahur.astro';
 import Faq, { type FaqItem } from '../components/Faq.astro';
 import { absolute } from '../lib/schema';
-import { FIND_PATH, LIVE_GAMES, LORE_PATH, SOON_GAMES } from '../site';
+import { CONTACT_PATH, FAQ_PATH, FIND_PATH, LIVE_GAMES, LORE_PATH, SITE_PAGES, SOON_GAMES } from '../site';
 
 const itemList = {
   '@type': 'ItemList',
@@ -178,10 +178,54 @@ const faqs: FaqItem[] = [
         <p class="eyebrow">FAQ</p>
         <h2 id="faq-title" class="mt-3 text-heading-lg">Common Questions</h2>
         <p class="mt-3 text-body">
-          More about the game itself on the <a class="link" href={`${FIND_PATH}#faq`}>Find Tung Tung Tung Sahur page</a>.
+          More about the game itself on the <a class="link" href={`${FIND_PATH}#faq`}>Find Tung Tung Tung Sahur page</a>,
+          or see <a class="link" href={FAQ_PATH}>every question about the meme and the games</a>.
         </p>
       </div>
       <Faq items={faqs} />
+    </div>
+  </section>
+
+  <section id="site" aria-labelledby="site-title" class="border-t border-hairline">
+    <div class="mx-auto max-w-page px-4 py-20 sm:px-6 md:py-28">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="eyebrow">The Site</p>
+          <h2 id="site-title" class="mt-3 text-heading-lg">Who Runs This, and the Fine Print</h2>
+          <p class="mt-3 max-w-xl text-body">
+            An independent fan project rather than a game portal. Here’s who makes it, how to reach them, what happens
+            to your data and the terms you’re playing under.
+          </p>
+        </div>
+        <a href={CONTACT_PATH} class="link -my-1.5 inline-block shrink-0 py-1.5 text-sm font-medium">Contact Us →</a>
+      </div>
+      <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          SITE_PAGES.map((page) => (
+            <li>
+              <a
+                href={page.href}
+                class="card group flex h-full flex-col p-6 transition-colors hover:border-[#343a4d] hover:bg-raised"
+              >
+                <h3 class="flex items-center justify-between gap-3 text-heading-md">
+                  {page.label}
+                  <svg
+                    class="size-4 shrink-0 text-mute transition-transform group-hover:translate-x-0.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h14m-6-6 6 6-6 6" />
+                  </svg>
+                </h3>
+                <p class="mt-2 text-sm text-body">{page.blurb}</p>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 

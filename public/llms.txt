@@ -20,7 +20,13 @@ Key facts about this site:
 
 - [Who Is Tung Tung Tung Sahur?](https://thetungtungtungsahur.com/tung-tung-tung-sahur): what the name means (kentongan + sahur), who created him and when, why he is Indonesian rather than Italian despite the "Italian brainrot" label, the three-calls lore, alternative spellings, and a table disambiguating the different Tung Tung Tung Sahur games that exist.
 
+## Questions
+
+- [FAQ](https://thetungtungtungsahur.com/faq): ~40 answers grouped into the name and its meaning (tung, sahur, kentongan, how many tungs, Triple T), origin and ownership (Noxa, DALL·E, the Mementum Lab vs Spyder Games copyright dispute and whether he is public domain), the lore and the character, Ramadan and whether the meme offends anyone, the Steal a Brainrot and Roblox removals plus the Fortnite skin, and how to play the games here.
+
 ## Site
 
 - [About](https://thetungtungtungsahur.com/about): who made this and how it is built.
+- [Contact](https://thetungtungtungsahur.com/contact): the one email address for bug reports, game ideas, accessibility issues and rights or press enquiries — plus what this site cannot help with (other developers' Tung Tung Tung Sahur games, Steal a Brainrot items, licensing the character).
 - [Privacy](https://thetungtungtungsahur.com/privacy): what is stored and where.
+- [Terms & Conditions](https://thetungtungtungsahur.com/terms): free to play, unofficial fan work, original artwork and code, what you may do with it (screenshots, video and streaming are fine; re-hosting is not), and the site offered as-is.

@@ -4,7 +4,7 @@ import Faq, { type FaqItem } from '../components/Faq.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Sahur from '../components/Sahur.astro';
 import { type Crumb } from '../lib/schema';
-import { FIND_PATH, LORE_PATH } from '../site';
+import { FAQ_PATH, FIND_PATH, LORE_PATH } from '../site';
 
 const title = 'Who Is Tung Tung Tung Sahur?';
 const description =
@@ -278,6 +278,10 @@ const faqs: FaqItem[] = [
       <section aria-labelledby="lore-faq-title">
         <h2 id="lore-faq-title" class="text-heading-lg">Frequently Asked</h2>
         <Faq items={faqs} class="mt-6" />
+        <p class="mt-5 text-sm text-body">
+          There are plenty more, including the Steal a Brainrot removals and who actually owns the character:{' '}
+          <a class="link" href={FAQ_PATH}>see the full FAQ →</a>
+        </p>
       </section>
 
       <section aria-labelledby="play-title" class="card p-6 sm:p-10">

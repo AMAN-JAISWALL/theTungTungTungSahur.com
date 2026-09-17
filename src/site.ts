@@ -7,15 +7,56 @@ export const SITE = {
   locale: 'en_US',
 } as const;
 
+/** The one inbox for the whole site: feedback, bugs, rights queries. Published on /contact. */
+export const CONTACT_EMAIL = 'hello@thetungtungtungsahur.com';
+
 export const FIND_PATH = '/games/find-tung-tung-tung-sahur';
 /** The entity page explaining the meme itself. */
 export const LORE_PATH = '/tung-tung-tung-sahur';
+/** The question hub: everything people ask about the meme, the games and the Roblox dispute. */
+export const FAQ_PATH = '/faq';
+export const ABOUT_PATH = '/about';
+export const CONTACT_PATH = '/contact';
+export const PRIVACY_PATH = '/privacy';
+export const TERMS_PATH = '/terms';
 
 export const NAV = [
   { href: '/games', label: 'Games' },
   { href: `${FIND_PATH}#how-to-play`, label: 'How to Play' },
   { href: LORE_PATH, label: 'Who Is He?' },
-  { href: '/about', label: 'About' },
+  { href: FAQ_PATH, label: 'FAQ' },
+  { href: ABOUT_PATH, label: 'About' },
+] as const;
+
+/**
+ * The pages about the site rather than the games. One list, rendered twice: as a section on the
+ * home page and as the footer's Site and Legal columns, so the two can't drift apart.
+ */
+export const SITE_PAGES = [
+  {
+    href: ABOUT_PATH,
+    label: 'About Us',
+    legal: false,
+    blurb: 'Who makes this, why a meme about a drum became a game you play by ear, and how it’s built.',
+  },
+  {
+    href: CONTACT_PATH,
+    label: 'Contact Us',
+    legal: false,
+    blurb: 'Report a bug, suggest a game, or send a rights query. One inbox, read by one person.',
+  },
+  {
+    href: PRIVACY_PATH,
+    label: 'Privacy Policy',
+    legal: true,
+    blurb: 'What’s stored and where: your progress stays in your browser. No accounts, no tracking.',
+  },
+  {
+    href: TERMS_PATH,
+    label: 'Terms & Conditions',
+    legal: true,
+    blurb: 'The rules for using the site: free to play, fan-made and unofficial, offered as-is.',
+  },
 ] as const;
 
 export type GameIconName = 'lantern' | 'runner' | 'rhythm' | 'alarm' | 'tap';

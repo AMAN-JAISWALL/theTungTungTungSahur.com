@@ -1,0 +1,110 @@
+---
+/**
+ * The body shared by /404 and /500: one night scene, one set of actions and one list of
+ * ways out, so the two error pages can't drift apart. Only the copy differs.
+ */
+import NightScene from './NightScene.astro';
+import { FAQ_PATH, FIND_PATH, LORE_PATH } from '../site';
+
+interface Props {
+  /** HTTP status this page stands in for; also seeds the star field. */
+  code: 404 | 500;
+  eyebrow: string;
+  title: string;
+  lead: string;
+  /** The page's main link. On /500 it sits behind the retry button. */
+  cta: { href: string; label: string };
+  /** Offer a reload button first — only useful when the failure may be temporary. */
+  retry?: boolean;
+}
+
+const { code, eyebrow, title, lead, cta, retry = false } = Astro.props;
+
+/** A dead end is still a landing page, so it lists the four places people actually want. */
+const ways = [
+  {
+    href: `${FIND_PATH}#play`,
+    label: 'Find Tung Tung Tung Sahur',
+    blurb: 'The live game. Track him by sound through a dark village and catch him before dawn.',
+  },
+  {
+    href: '/games',
+    label: 'All Games',
+    blurb: 'Everything playable here, plus the titles still being built.',
+  },
+  {
+    href: LORE_PATH,
+    label: 'Who Is He?',
+    blurb: 'The meme explained: what the name means, who drew him, and when.',
+  },
+  {
+    href: FAQ_PATH,
+    label: 'FAQ',
+    blurb: 'Around forty answers about the character, the ownership dispute and the games.',
+  },
+];
+---
+
+<section class="relative isolate overflow-hidden">
+  <NightScene id={`error-${code}`} stars={60} class="-z-10" />
+  {/* The bottom padding keeps the buttons clear of the skyline, which takes up to 30% of the scene. */}
+  <div class="mx-auto flex min-h-[60dvh] max-w-xl flex-col items-center justify-center px-4 pt-16 pb-40 text-center sm:pb-44">
+    <span class="glow-eyes relative! [transform:none]! [--eye-size:12px]" aria-hidden="true"><i></i><i></i></span>
+    <p class="eyebrow mt-8">{eyebrow}</p>
+    <h1 class="mt-3 text-display-sm sm:text-display">{title}</h1>
+    <p class="mt-4 text-body">{lead}</p>
+
+    <div class="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:justify-center">
+      {
+        retry && (
+          <button type="button" class="btn btn-pill btn-primary hidden" data-error-retry>
+            Try Again
+          </button>
+        )
+      }
+      <a href={cta.href} class:list={['btn btn-pill', retry ? 'btn-secondary' : 'btn-primary']}>{cta.label}</a>
+      <a href="/" class="btn btn-pill btn-secondary">Back to the Hub</a>
+    </div>
+
+    <button type="button" class="btn btn-app btn-ghost mt-4 hidden" data-error-back>← Go Back</button>
+  </div>
+</section>
+
+<section aria-labelledby="ways-title" class="border-t border-hairline">
+  <div class="mx-auto max-w-page px-4 py-16 sm:px-6 md:py-20">
+    <p class="eyebrow">Still Here</p>
+    <h2 id="ways-title" class="mt-3 text-heading-lg">Ways Back In</h2>
+    <p class="mt-3 max-w-xl text-body">Whatever you were after, it is probably one of these four.</p>
+    <ul class="mt-10 grid gap-4 sm:grid-cols-2">
+      {
+        ways.map((way) => (
+          <li>
+            <a href={way.href} class="card flex h-full flex-col p-6 transition-colors hover:bg-raised">
+              <h3 class="text-heading-md">{way.label}</h3>
+              <p class="mt-2 flex-1 text-sm text-body">{way.blurb}</p>
+              <span class="link mt-5 text-sm font-medium">Go there →</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+{/* Inline so an error page needs no extra request. Both controls need JS, so both stay hidden until it runs. */}
+<script is:inline>
+  (() => {
+    const back = document.querySelector('[data-error-back]');
+    // history.length is 1 on a fresh tab: there is nothing to go back to, so the button never appears.
+    if (back && window.history.length > 1) {
+      back.classList.remove('hidden');
+      back.addEventListener('click', () => window.history.back());
+    }
+
+    const retry = document.querySelector('[data-error-retry]');
+    if (retry) {
+      retry.classList.remove('hidden');
+      retry.addEventListener('click', () => window.location.reload());
+    }
+  })();
+</script>

@@ -3,11 +3,11 @@ import Layout from '../layouts/Layout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Sahur from '../components/Sahur.astro';
 import { type Crumb } from '../lib/schema';
-import { FIND_PATH, LORE_PATH, SITE } from '../site';
+import { ABOUT_PATH, CONTACT_PATH, FIND_PATH, LORE_PATH, PRIVACY_PATH, SITE, TERMS_PATH } from '../site';
 
 const crumbs: Crumb[] = [
   { label: 'Home', href: '/' },
-  { label: 'About', href: '/about' },
+  { label: 'About', href: ABOUT_PATH },
 ];
 
 const principles = [
@@ -87,11 +87,24 @@ const principles = [
         <h2 id="disclaimer-title" class="text-heading-md">Disclaimer</h2>
         <p class="mt-4 text-body">
           <span translate="no">{SITE.name}</span> is an unofficial fan project. It isn’t affiliated with or endorsed by the
-          creators of the Tung Tung Tung Sahur meme or any other game.
+          creators of the Tung Tung Tung Sahur meme or any other game. The full small print lives in the{' '}
+          <a class="link" href={TERMS_PATH}>terms & conditions</a> and the{' '}
+          <a class="link" href={PRIVACY_PATH}>privacy policy</a>.
         </p>
       </section>
 
-      <a href={`${FIND_PATH}#play`} class="btn btn-pill btn-primary">Play Find Tung Tung Tung Sahur</a>
+      <section aria-labelledby="contact-title">
+        <h2 id="contact-title" class="text-heading-md">Get in Touch</h2>
+        <p class="mt-4 text-body">
+          Found a bug, want a game mode, or spotted something wrong on one of the meme pages?{' '}
+          <a class="link" href={CONTACT_PATH}>Contact us</a> — it’s one inbox and one person reading it.
+        </p>
+      </section>
+
+      <div class="flex flex-col gap-3 sm:flex-row">
+        <a href={`${FIND_PATH}#play`} class="btn btn-pill btn-primary">Play Find Tung Tung Tung Sahur</a>
+        <a href={CONTACT_PATH} class="btn btn-pill btn-secondary">Contact Us</a>
+      </div>
     </div>
 
     <div class="relative hidden md:block" aria-hidden="true">

@@ -1,0 +1,221 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { type Crumb } from '../lib/schema';
+import { CONTACT_EMAIL, CONTACT_PATH, FAQ_PATH, FIND_PATH, PRIVACY_PATH, SITE, TERMS_PATH } from '../site';
+
+/** Bumped by hand whenever the terms below change. */
+const updated = new Date(Date.UTC(2026, 8, 18));
+const updatedIso = updated.toISOString().slice(0, 10);
+const updatedLabel = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' }).format(updated);
+
+const crumbs: Crumb[] = [
+  { label: 'Home', href: '/' },
+  { label: 'Terms & Conditions', href: TERMS_PATH },
+];
+
+interface Section {
+  id: string;
+  title: string;
+  /** Paragraphs. May contain inline HTML (links, <em>, <strong>) — authored here, never user input. */
+  body: string[];
+}
+
+const sections: Section[] = [
+  {
+    id: 'agreement',
+    title: '1. These Terms',
+    body: [
+      `${SITE.name} is an independent, fan-made website run by one person. Using it — playing a game, reading a page — means you accept the terms below. If you don’t accept them, please don’t use the site.`,
+      'The terms are written in plain English on purpose. Nothing here is meant to be a trap, and nothing here takes away a right you have under the consumer law where you live.',
+    ],
+  },
+  {
+    id: 'free',
+    title: '2. The Games Are Free',
+    body: [
+      'Every game on this site is free to play. There is no payment, no subscription, no account to create, no email address to hand over and nothing to install. There are no ads and no in-game purchases, so there is nothing for you to buy and nothing for us to refund.',
+      'Because the site is free and made in spare time, games may be added, changed, paused or removed at any time, and the site may be offline for periods without notice. Nothing here is promised to stay available forever.',
+    ],
+  },
+  {
+    id: 'unofficial',
+    title: '3. Fan Work, Not Official',
+    body: [
+      `<span translate="no">${SITE.name}</span> is an unofficial fan project. It is not affiliated with, endorsed by, sponsored by or connected to the creator of the Tung Tung Tung Sahur meme, Mementum Lab, Spyder Games, Roblox Corporation, Epic Games or any other company mentioned anywhere on this site.`,
+      'We make no ownership claim over the Tung Tung Tung Sahur character itself. Who holds those rights is genuinely unsettled and currently in front of a US federal court — <a href="/faq#origin">the FAQ explains that dispute</a>. Any name, trademark or character referred to on this site belongs to its respective owner, and is referred to for description and commentary only.',
+      'Equally, the games here are not the horror, clicker, obby or shooter games built on the same character elsewhere. Those are made by unrelated developers and we cannot help you with them.',
+    ],
+  },
+  {
+    id: 'content',
+    title: '4. The Artwork, Code and Sound on This Site',
+    body: [
+      'Everything original on this site — the drawings, which are hand-built as inline SVG, the synthesized audio, the game design, the code and the writing — was made for this site and belongs to it. You may not copy it, re-host it, sell it, bundle it into another product or pass it off as your own.',
+      '<strong>You can, however, do all the normal things:</strong> play the games as much as you like, take screenshots, record video, stream them, post clips, and write about them. No permission is needed for that, monetised channels included. A link back is appreciated, never required.',
+      'What isn’t allowed is re-hosting a game — copying it onto another domain, wrapping it in ads, embedding it in a portal or repackaging it as an app or APK. If you want to feature a game somewhere, <a href="/contact">just ask</a>.',
+    ],
+  },
+  {
+    id: 'use',
+    title: '5. Fair Use of the Site',
+    body: [
+      'Use the site the way it was meant to be used. Don’t try to break it, overload it, scrape it at volume, probe it for vulnerabilities, or use it to distribute anything harmful to other visitors.',
+      'Game scores and streaks are stored in your own browser, which means you could edit them if you wanted to. You’d only be fooling yourself — there is no leaderboard, no prize and no account, so there is nobody else to cheat.',
+    ],
+  },
+  {
+    id: 'progress',
+    title: '6. Your Saved Progress',
+    body: [
+      'Your finds, best times, daily results, streaks and settings are written to your browser’s local storage on your own device. They are never uploaded, so there is no backup and no way to restore them.',
+      'Clearing your browser data, playing in private mode, switching browsers or switching devices will lose that progress. That is how the storage works rather than a fault, and we can’t recover it for you. <a href="/privacy">The privacy policy</a> covers what is stored in more detail.',
+    ],
+  },
+  {
+    id: 'links',
+    title: '7. Links to Other Sites',
+    body: [
+      'Some pages link out to sources such as Wikipedia, Know Your Meme and news reporting, so you can check where a claim came from. Those sites are not ours, and we aren’t responsible for their content, their accuracy or how they handle your data.',
+    ],
+  },
+  {
+    id: 'accuracy',
+    title: '8. Accuracy of the Information Here',
+    body: [
+      'The pages about the meme, its origin and the ownership dispute are researched and dated, but this is a fan site and not a legal, religious or news authority. Details change — the character has been added to and removed from other games more than once — and pages may fall out of date between updates.',
+      'Nothing on this site is legal advice. If you need to know whether you can use the character commercially, ask a lawyer rather than a game hub.',
+    ],
+  },
+  {
+    id: 'warranty',
+    title: '9. No Warranty',
+    body: [
+      'The site and its games are provided “as is” and “as available”, without warranties of any kind. We don’t promise that the site will be uninterrupted, error-free, free of bugs, or compatible with every browser, device or accessibility setup — only that we try, and that we’ll fix what we can when it’s reported.',
+    ],
+  },
+  {
+    id: 'liability',
+    title: '10. Limitation of Liability',
+    body: [
+      'To the fullest extent permitted by law, we are not liable for any indirect or consequential loss arising from your use of this free site — including lost game progress, lost time, or any issue caused by a third-party site you reached from a link here. Nothing in these terms limits liability that cannot be limited by law.',
+    ],
+  },
+  {
+    id: 'children',
+    title: '11. Younger Players',
+    body: [
+      'The games are suitable for children: there is no violence, no chat, no ads, no sign-up, and nothing is collected about whoever is playing. Because there are no accounts and no personal data, there is nothing for a parent to request, correct or delete beyond clearing the browser’s stored data.',
+      `If you are a parent or guardian with a question or a concern about anything here, please <a href="/contact">get in touch</a>.`,
+    ],
+  },
+  {
+    id: 'rights',
+    title: '12. Rights Complaints',
+    body: [
+      `If you believe something on this site infringes your copyright, trademark or other rights, email <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a> with the page URL, what specifically is affected and proof of your claim. Complaints are taken seriously and acted on quickly — this site exists for fun, not to fight anyone over a drum with legs.`,
+    ],
+  },
+  {
+    id: 'changes',
+    title: '13. Changes to These Terms',
+    body: [
+      'These terms may be updated as the site grows — a new game, a new feature. When they change, the date at the top of this page changes with them. Continuing to use the site after an update means you accept the revised terms.',
+    ],
+  },
+  {
+    id: 'law',
+    // DECISION NEEDED — the owner must name the governing jurisdiction here before launch.
+    // Deliberately left unnamed: nothing in this repo establishes one, and guessing it from
+    // the author's location would be an unsupported legal claim. The wording below is a
+    // placeholder that asserts nothing; replace it once the jurisdiction is decided.
+    title: '14. Governing Law',
+    body: [
+      'A governing law for these terms has not been named yet. It will be set out here once it is, and the date at the top of this page will change when that happens.',
+      'Whatever it turns out to be, nothing in these terms removes a mandatory consumer protection or legal right you have under the law of the country where you live.',
+    ],
+  },
+  {
+    id: 'contact',
+    title: '15. Contact',
+    body: [
+      `Questions about these terms go to <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>, or through <a href="/contact">the contact page</a>.`,
+    ],
+  },
+];
+---
+
+<Layout
+  title="Terms & Conditions | The Tung Tung Tung Sahur"
+  description={`The terms for using ${SITE.name}: free browser games, fan-made and unofficial, offered as-is with no accounts and no payments.`}
+  path={TERMS_PATH}
+  crumbs={crumbs}
+  about={false}
+  dateModified={updatedIso}
+>
+  <PageHeader
+    eyebrow="Legal"
+    title="Terms & Conditions"
+    lead="Short version: the games are free, this is unofficial fan work, your progress lives in your own browser, and the site is offered as-is. The long version is below."
+    crumbs={crumbs}
+  >
+    <p class="mt-6 font-mono text-xs text-mute">
+      Last updated <time datetime={updatedIso}>{updatedLabel}</time>
+    </p>
+  </PageHeader>
+
+  <div class="mx-auto grid max-w-page gap-10 px-4 py-16 sm:px-6 md:grid-cols-[1fr_2.2fr] md:gap-16 md:py-20">
+    {/* Hidden on phones: 15 entries would push the terms themselves a screen and a half down. */}
+    <nav aria-label="On this page" class="hidden md:sticky md:top-24 md:block md:self-start">
+      <h2 class="eyebrow">On This Page</h2>
+      <ul class="mt-3 space-y-0.5">
+        {
+          sections.map((section) => (
+            <li>
+              <a
+                href={`#${section.id}`}
+                class="-mx-2 block rounded-sm px-2 py-1.5 text-sm text-body transition-colors hover:text-ink"
+              >
+                {section.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="max-w-2xl space-y-10">
+      {
+        sections.map((section) => (
+          <section id={section.id} aria-labelledby={`${section.id}-title`}>
+            <h2 id={`${section.id}-title`} class="text-heading-md">
+              {section.title}
+            </h2>
+            <div class="mt-3 space-y-3">
+              {/* Links live inside the authored HTML above, so they're styled from here. */}
+              {section.body.map((paragraph) => (
+                <p
+                  class="text-body [&_a]:text-link [&_a]:underline-offset-4 [&_a:hover]:text-link-deep [&_a:hover]:underline"
+                  set:html={paragraph}
+                />
+              ))}
+            </div>
+          </section>
+        ))
+      }
+
+      <section aria-labelledby="terms-next-title" class="card p-6 sm:p-8">
+        <h2 id="terms-next-title" class="text-heading-md">Still Reading?</h2>
+        <p class="mt-3 text-body">
+          That’s the lot. The <a class="link" href={PRIVACY_PATH}>privacy policy</a> covers what’s stored, the{' '}
+          <a class="link" href={FAQ_PATH}>FAQ</a> covers the meme and the ownership dispute, and there is a wooden
+          drummer hiding in the dark who has been waiting this whole time.
+        </p>
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+          <a href={`${FIND_PATH}#play`} class="btn btn-pill btn-primary">Play Find Tung Tung Tung Sahur</a>
+          <a href={CONTACT_PATH} class="btn btn-pill btn-secondary">Contact Us</a>
+        </div>
+      </section>
+    </div>
+  </div>
+</Layout>

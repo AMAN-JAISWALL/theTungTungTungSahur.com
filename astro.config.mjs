@@ -9,7 +9,12 @@ const SITEMAP_PRIORITY = {
   '/': 1.0,
   '/games/find-tung-tung-tung-sahur': 0.9,
   '/tung-tung-tung-sahur': 0.8,
+  '/faq': 0.8,
   '/games': 0.7,
+  '/about': 0.5,
+  '/contact': 0.5,
+  '/privacy': 0.3,
+  '/terms': 0.3,
 };
 
 // https://astro.build/config
@@ -46,7 +51,8 @@ export default defineConfig({
 
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/404'),
+      // Error pages are served in place of a URL, never crawled to.
+      filter: (page) => !/\/(?:404|500)$/.test(new URL(page).pathname),
       changefreq: 'weekly',
       lastmod: new Date(),
       serialize(item) {

@@ -28,6 +28,10 @@ interface Props {
   datePublished?: string;
   dateModified?: string;
   ogType?: 'website' | 'article';
+  /**
+   * Drop the page from the index and skip its canonical and JSON-LD — for the error pages, which
+   * stand in for a URL rather than being one. Crawlers still `follow` the links out of them.
+   */
   noindex?: boolean;
 }
 
@@ -69,7 +73,7 @@ const graph = noindex
     <meta name="description" content={description} />
     {
       noindex ? (
-        <meta name="robots" content="noindex" />
+        <meta name="robots" content="noindex, follow" />
       ) : (
         <Fragment>
           <link rel="canonical" href={canonical} />

@@ -31,8 +31,9 @@ The sound is synthesized with the Web Audio API: knocks get louder, brighter, hi
 src/
 ├── site.ts                 Site constants, nav and the games list (live + coming soon)
 ├── layouts/Layout.astro    SEO head: title, description, canonical, Open Graph, JSON-LD
-├── pages/                  /, /games, /games/find-tung-tung-tung-sahur, /about, /privacy, 404
+├── pages/                  /, /games, /games/find-tung-tung-tung-sahur, /about, /privacy, 404, 500
 ├── components/
+│   ├── ErrorPage.astro     Shared body of the 404 and 500 pages
 │   ├── find/FindGame.astro Game menu and the full-screen game dialog
 │   ├── NightScene.astro    Sky, stars, moon and village skyline
 │   ├── Sahur.astro         The character (original art)
@@ -50,6 +51,17 @@ src/
 └── styles/                 global.css (tokens, components), find.css (game)
 scripts/generate-images.ts  Renders public/favicon.svg, icons and og/*.png
 ```
+
+## Error Pages
+
+`npm run build` emits `dist/404.html` and `dist/500.html`. Both are `noindex, follow` and kept out of the sitemap; they share `src/components/ErrorPage.astro`, so the copy is the only difference.
+
+The status code is the host's job, not Astro's:
+
+- **404** — Netlify, Vercel, Cloudflare Pages and GitHub Pages serve `404.html` with a real `404` for any unmatched path, with no configuration. On Nginx: `error_page 404 /404.html;` (add `internal;` on the location). On Apache: `ErrorDocument 404 /404.html`.
+- **500** — a static host has nothing that can fail, so this page only appears if you point an error handler at it: `error_page 500 502 503 504 /500.html;` on Nginx, `ErrorDocument 500 /500.html` on Apache, or the origin-error page setting on a CDN. If the site is ever switched to on-demand rendering, Astro renders `src/pages/500.astro` itself whenever a request throws.
+
+Check both locally with `npm run build && npm run preview`, then visit `/404` and `/500`.
 
 ## Adding a Game
 

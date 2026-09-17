@@ -6,7 +6,7 @@ import GameCard from '../../components/GameCard.astro';
 import FindGame from '../../components/find/FindGame.astro';
 import { absolute, CHARACTER_ID, ORG_ID, pageId, ref, type Crumb } from '../../lib/schema';
 import { DAILY_MISS_PENALTY, RUSH } from '../../scripts/find/modes';
-import { FIND_PATH, LIVE_GAMES, LORE_PATH, SOON_GAMES } from '../../site';
+import { FAQ_PATH, FIND_PATH, LIVE_GAMES, LORE_PATH, SOON_GAMES } from '../../site';
 
 const title = 'Find Tung Tung Tung Sahur';
 /** Launch day, matching the first Daily Sahur in scripts/find/modes.ts. */
@@ -349,9 +349,10 @@ const howTo = {
         <p class="eyebrow">FAQ</p>
         <h2 id="faq-title" class="mt-3 text-heading-lg">Questions, Answered</h2>
         <p class="mt-3 text-body">
-          Curious about the meme instead? <a class="link" href={LORE_PATH}>What Tung Tung Tung Sahur means</a> covers
-          the name, the origin and the lore. The <a class="link" href="/about">about page</a> explains who made this and
-          why.
+          These are about the game. For the meme — the name, the origin, the lore, who owns him and why Roblox keeps
+          deleting him — see the <a class="link" href={FAQ_PATH}>full FAQ</a> or{' '}
+          <a class="link" href={LORE_PATH}>Who Is Tung Tung Tung Sahur?</a> The{' '}
+          <a class="link" href="/about">about page</a> explains who made this and why.
         </p>
       </div>
       <Faq items={faqs} />

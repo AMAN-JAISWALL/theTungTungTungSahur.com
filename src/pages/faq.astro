@@ -1,0 +1,326 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { type Crumb } from '../lib/schema';
+import { FAQ_PATH, FIND_PATH, LORE_PATH } from '../site';
+
+/** Bumped by hand when the answers below change. The Steal a Brainrot section dates fastest. */
+const PUBLISHED = '2026-09-18';
+
+const crumbs: Crumb[] = [
+  { label: 'Home', href: '/' },
+  { label: 'FAQ', href: FAQ_PATH },
+];
+
+interface Group {
+  id: string;
+  title: string;
+  lead: string;
+  items: FaqItem[];
+}
+
+/**
+ * Grouped for readers; flattened into one FAQPage for search engines. Answers stay to a single
+ * paragraph each, because that's the unit an answer engine quotes.
+ */
+const GROUPS: Group[] = [
+  {
+    id: 'meaning',
+    title: 'The Name and What It Means',
+    lead: 'Where “tung tung tung” comes from, what sahur is, and how many tungs there are supposed to be.',
+    items: [
+      {
+        q: 'What Is Tung Tung Tung Sahur?',
+        a: 'Tung Tung Tung Sahur is an AI-generated meme character from Indonesian TikTok: a walking <em>kentongan</em> — the hollow wooden slit drum used across Indonesia to wake a neighbourhood — given a face, two thin legs and a wooden bat. He was posted on 28 February 2025 and became one of the most recognisable characters of the 2025 “brainrot” wave. His name is just the sound he makes: three knocks, then the reason for them. <a href="/tung-tung-tung-sahur">The full story is here</a>.',
+      },
+      {
+        q: 'What Does Tung Tung Tung Sahur Mean?',
+        a: 'Roughly “knock knock knock — wake up for the pre-dawn meal”. “Tung” is Indonesian onomatopoeia for a wooden drum being struck, and “sahur” is the meal Muslims eat before sunrise during Ramadan. Put together, the name describes a real scene rather than nonsense: someone walking the street in the dark, banging a drum to wake the neighbourhood in time to eat.',
+      },
+      {
+        q: 'What Does “Tung” Mean?',
+        a: 'On its own it isn’t a dictionary word — it’s onomatopoeia, the Indonesian way of writing the hollow knock a kentongan makes when you hit it. English would spell the same sound “tock” or “thunk”. Saying it three times turns a single hit into a rhythm, which is the point: you’re meant to hear a drum being walked down the street, not one knock on a door.',
+      },
+      {
+        q: 'What Does “Sahur” Mean?',
+        a: 'Sahur — also spelled suhoor or sahoor, from the Arabic <em>saḥūr</em> — is the meal eaten before first light during Ramadan, before the day’s fast begins. It is the second half of the character’s name and the entire reason for the drumming: somebody has to wake the street up in time for it.',
+      },
+      {
+        q: 'How Many Tungs Are in Tung Tung Tung Sahur?',
+        a: 'Three. That’s the standard spelling, and it matches the lore: if you’re called for sahur three times and still don’t answer, he turns up at your house. People stretch it out to four, five or a dozen tungs as a joke, so “tung tung tung tung sahur” is one of the most common search variants — but every version means the same character.',
+      },
+      {
+        q: 'Is It Tung Tung Tung Sahur or Tun Tun Tun Sahur?',
+        a: 'Tung, with a hard “g” — the “g” is what makes it sound like a drum. Tun Tun Tun Sahur is the most common misspelling. You’ll also see Tung Tung Sahur, TTT Sahur, Tong Tong Sahur and Tung Tung Tung Sahoor, all pointing at the same character.',
+      },
+      {
+        q: 'Why Do People Call Tung Tung Tung Sahur “Triple T”?',
+        a: 'Because the full name is a mouthful that starts with three identical words. Triple T and T³ are the shorthand fans use in comments, tier lists and game chats, and TTT Sahur is the same idea written out. It’s a nickname of convenience, not a separate character.',
+      },
+      {
+        q: 'What Is a Kentongan?',
+        a: 'A kentongan is a hollow wooden slit drum — usually a length of bamboo or a carved log with a slot cut into it — struck with a stick. Indonesian villages and neighbourhoods have used them for generations as a public address system, with a different rhythm for a meeting, a fire, a theft or a wake-up call. Tung Tung Tung Sahur is a kentongan with a face and legs. Its larger cousin, the drum kept at a mosque, is a <em>bedug</em>.',
+      },
+    ],
+  },
+  {
+    id: 'origin',
+    title: 'Who Made Him, and Who Owns Him',
+    lead: 'The creator, the AI tool, and the copyright fight now sitting in a US federal court.',
+    items: [
+      {
+        q: 'Who Invented Tung Tung Tung Sahur?',
+        a: 'Fernanda Bagas Indrastata, an Indonesian TikTok creator who posts as Noxa (@noxaasht). He generated the image with DALL·E and posted it on 28 February 2025 — the day before Ramadan began in Indonesia that year — over an Indonesian text-to-speech voice-over. Court filings in the later ownership dispute describe him making the character in about fifteen minutes using seven prompts.',
+      },
+      {
+        q: 'Is Tun Tun Tun Sahur AI?',
+        a: 'Yes. The original picture was generated with DALL·E and the voice in the first video is Indonesian text-to-speech, not a person. He came out of a local trend of “anomali” AI characters on Indonesian TikTok. Everything since — the animations, the songs, the games, the merch — has been made by people building on that one AI image.',
+      },
+      {
+        q: 'Who Owns Tung Tung Tung Sahur?',
+        a: 'That is genuinely unsettled, and it is being decided in court. Noxa is represented by Mementum Lab, a Paris-based licensing agency that claims the rights and has licensed the character to Epic Games, Plants vs Brainrots, toy makers and publishers. Roblox developer Spyder Games disputes that anyone can own him, arguing a purely AI-generated image fails US copyright law’s human-authorship requirement. <em>Spyder Games LLC v. Mementum Lab</em> is set for a jury trial on 8 November 2027. Nobody in that fight is us — this site is unaffiliated fan work.',
+      },
+      {
+        q: 'Is Tung Tung Tung Sahur Public Domain?',
+        a: 'Nobody can tell you for certain yet, and that is exactly what the lawsuit is about. US copyright requires human authorship, and the Copyright Office has refused registration for purely AI-generated images — which is the argument for the character being free to use. Mementum Lab counters that the authorship sits in the prompts and creative direction, and has also pursued <em>trademark</em> rights, which turn on commercial use rather than the creative process. Until a court rules, treat him as claimed rather than free.',
+      },
+      {
+        q: 'How Old Is Tung Tung Tung Sahur?',
+        a: 'The meme is about nineteen months old: the first post went up on 28 February 2025. The character’s in-universe age was never established, and fan wikis list it as unknown — which is fair enough for a log with legs.',
+      },
+      {
+        q: 'Is Tung Tung Tung Sahur a Boy or a Girl?',
+        a: 'He is referred to as male in the original video and in more or less everything since. His species, if you want one on the record, is “anthropomorphic kentongan”.',
+      },
+    ],
+  },
+  {
+    id: 'character',
+    title: 'The Lore and the Character',
+    lead: 'The one-sentence legend, how frightening he actually is, and where he lands in fan power rankings.',
+    items: [
+      {
+        q: 'What Is the Tung Tung Tung Sahur Lore?',
+        a: 'One sentence: if someone calls you for sahur three times and you don’t answer, he comes to your house. The original voice-over introduces him as an anomaly that only appears at sahur time, and that single joke is the seed of every horror game, animation and fan theory built on him since.',
+      },
+      {
+        q: 'Is Tung Tung Tung Sahur Scary?',
+        a: 'Mildly, and deliberately. The design is comic-creepy rather than genuinely frightening — a wooden log with a face and a bat — and what unease there is comes from the idea of something arriving at your door before dawn. The scary reputation is mostly borrowed from fan-made horror games and animations on other sites, not from the original TikTok. <strong>The game on this site is not a horror game:</strong> no jumpscares, no gore, nothing chasing you.',
+      },
+      {
+        q: 'Is Tung Tung Tung Sahur Powerful?',
+        a: 'In fan power-scaling, yes — he’s a consistent top-tier pick, credited with supernatural durability (he is solid wood) and a knock that disorients opponents, though most rankings put Bombardiro Crocodilo, Tralalero Tralala or La Vaca Saturno Saturnita above him. None of it is canon; there is no official text that defines his strength. The one place his power was ever a number was Steal a Brainrot, where he earned $25 per second as a Rare and $1.5M per second after returning as a Secret.',
+      },
+      {
+        q: 'Why Is Tung Tung Tung Sahur Holding a Bat?',
+        a: 'Because it’s his drumstick. A kentongan is played by striking it, so the bat is the tool he makes his own name with — and the lore then reframes it as a threat for anyone who sleeps through three calls. In the original image it reads as a wooden club or a baseball bat.',
+      },
+      {
+        q: 'Is Tung Tung Tung Sahur Italian Brainrot?',
+        a: 'He’s filed under it, but he isn’t Italian. “Italian brainrot” is the early-2025 wave of AI characters with sing-song pseudo-Italian names — Tralalero Tralala, Bombardiro Crocodilo, Ballerina Cappuccina. Tung Tung Tung Sahur went viral in the same weeks and got swept into the label, but the creator, the language, the drum and the tradition behind him are all Indonesian. Think of him as the Indonesian member of an Italian-named club.',
+      },
+      {
+        q: 'What Language Does Tung Tung Tung Sahur Speak?',
+        a: 'Indonesian. The original clip uses an Indonesian text-to-speech voice describing him as an anomaly that appears at sahur. Almost every English version you’ll hear is a fan re-dub made after the fact.',
+      },
+    ],
+  },
+  {
+    id: 'ramadan',
+    title: 'Ramadan, Sahur and Respect',
+    lead: 'The real tradition under the meme, and the honest answer on whether it offends anyone.',
+    items: [
+      {
+        q: 'Is Sahur a Real Thing?',
+        a: 'Very. Sahur is the pre-dawn meal hundreds of millions of Muslims eat during Ramadan, finishing at imsak just before dawn. So is the drumming: waking a neighbourhood for sahur is a real job that real people do, with kentongan, drums, pots and megaphones in Indonesia and Malaysia, and with equivalents elsewhere — the <em>mesaharati</em> in Egypt and the Levant, the Ramadan <em>davulcu</em> drummers in Turkey. The meme exaggerates an ordinary thing; it didn’t invent it.',
+      },
+      {
+        q: 'What Is Sahur for Muslims?',
+        a: 'Sahur (suhoor) is the last food and water before a day of fasting during Ramadan, eaten in the dark before dawn and followed by nothing until sunset. It is usually a quiet family affair rather than an event, and in Islam it is treated as a blessed practice, not merely a practical one — which is part of why waking the street for it is considered a service to your neighbours.',
+      },
+      {
+        q: 'What Does Tung Tung Tung Sahur Mean to Muslims?',
+        a: 'There is no single Muslim view, and it’s worth saying that plainly. For many Indonesian and Malaysian Muslims the meme lands as affectionate nostalgia: it was made by an Indonesian creator during Ramadan, and it’s built on the childhood memory of being woken by drums in the street. Others find the horror framing uncomfortable, because being woken for sahur is a neighbourly service inside a sacred month rather than a monster story, and most of the meme’s global audience never learns what a kentongan is or why anybody is drumming at 3am. The friction is about context getting lost as it travels, not about anything insulting in the meme itself.',
+      },
+      {
+        q: 'Is Tung Tung Tung Sahur a Bad Word?',
+        a: 'No. There is no profanity in it in Indonesian, Arabic, Italian or English. “Tung” is a drum sound and “sahur” is the name of a meal. If you’ve heard a child repeating it and wondered, they are quoting a meme, not swearing.',
+      },
+      {
+        q: 'Is Tung Tung Tung Sahur a Secret Code for Something?',
+        a: 'No. There’s no hidden meaning, no slur in another language and no coded message — a recurring rumour about brainrot names generally, and untrue here. The name is literally a drum sound plus the name of a meal, and the Indonesian voice-over says exactly what the lore says. (In Steal a Brainrot, “Secret” means something different: see the section below.)',
+      },
+    ],
+  },
+  {
+    id: 'steal-a-brainrot',
+    title: 'Steal a Brainrot, Roblox and Fortnite',
+    lead: 'Why he vanished from the biggest Roblox game of 2025, why he vanished a second time, and what’s still in.',
+    items: [
+      {
+        q: 'Why Was Tung Tung Tung Sahur Removed From Steal a Brainrot?',
+        a: 'Copyright. On 13 September 2025 the developer, SpyderSammy, deleted every instance of the character from the Roblox game after Mementum Lab — the agency representing creator Noxa — sent a cease-and-desist and said the game was earning millions from the character without a licence. Sammy said he pulled him to avoid a Roblox takedown while talks were ongoing, and the agency later clarified that Noxa had not personally demanded the removal. Players who owned one lost nothing: their Sahur became Gangster Footera with its mutations and traits intact, and the first Rebirth requirement was changed because it had needed him specifically.',
+      },
+      {
+        q: 'Did Tung Tung Sahur Get Removed Again?',
+        a: 'Yes, twice in total. He returned on 29 November 2025 as a Secret-rarity brainrot with a new coffin model, then was removed a second time on 25 April 2026 after licensing talks between Mementum Lab and Spyder Games broke down. As of September 2026 he is out of the game and the dispute is in federal court, with a jury trial scheduled for 8 November 2027. His in-game trait was quietly renamed “Zombie”, though the icon still shows him.',
+      },
+      {
+        q: 'Is Tung Sahur a Secret in Steal a Brainrot?',
+        a: 'He was, during the November 2025 return: Secret rarity, $500M to buy and $1.5M per second, a considerable jump from his original Rare stats of $3K and $25 per second. You didn’t buy him directly — you got a coffin, and opening it let him walk out. He isn’t obtainable at all now, which is why searching this turns up so much contradictory information: the correct answer changed twice inside a year.',
+      },
+      {
+        q: 'Which Brainrots Have Been Banned in Steal a Brainrot?',
+        a: '“Banned” usually means “pulled for legal reasons”, and the clearest cases are Tung Tung Tung Sahur (removed September 2025, returned, removed again April 2026), his Coffin version, and Statutino Libertino — swapped for Unclito Samito because the Statue of Liberty carries copyright risk while Uncle Sam doesn’t. Others including Chimpanzini Spiderini, Flappin Clover, Gattatino Neonino and Ice Dragon have been removed or reverted without the developer explaining why. Worth stating clearly: the game itself has never been banned or deleted from Roblox, whatever the thumbnails claim.',
+      },
+      {
+        q: 'Is Steal a Brainrot Copyrighted?',
+        a: 'Yes. The game is registered with the US Copyright Office under registration PA002544969, and Spyder Games enforces it — in October 2025 it sued the developer of “Stealing Brainrots”, a Fortnite Creative copy, over duplicated artwork, interfaces, objects and level design. The awkward part is that this is the mirror image of its own defence: Spyder Games protects its copyright in the game while arguing that the AI-generated characters inside it can’t be copyrighted by anybody.',
+      },
+      {
+        q: 'Is Tung Tung Tung Sahur in Fortnite?',
+        a: 'Yes. Epic Games released him as a cosmetic skin on 1 April 2026 alongside Ballerina Cappuccina, trailed on 18 March 2026, in an official deal licensed through Mementum Lab. Reception from Fortnite players was largely negative — the objection was to shipping AI-generated characters at all rather than to this one in particular.',
+      },
+      {
+        q: 'Is Tung Tung Tung Sahur Still in Roblox?',
+        a: 'Not in Steal a Brainrot, and Brainrot Evolution pulled him too while anticipating legal trouble. Roblox is enormous, though, so he still turns up in unofficial games and user-generated items. Because none of that is coordinated, availability changes without notice — a list of “games he’s in” goes stale within weeks.',
+      },
+    ],
+  },
+  {
+    id: 'games',
+    title: 'Playing the Games',
+    lead: 'How the game on this site works, plus a straight answer on the clicker, PC and horror versions you were probably searching for.',
+    items: [
+      {
+        q: 'How Do You Play the Tung Tung Tung Sahur Game?',
+        a: 'On this site you play it by ear. In <a href="/games/find-tung-tung-tung-sahur">Find Tung Tung Tung Sahur</a> he hides somewhere in a dark village and drums; you move a lantern with your mouse, your finger or the arrow keys and listen. The tung tung tung gets faster, louder and brighter as you close in, and when it runs into a drumroll and two eyes glint in the dark, you click, tap or lift your finger to catch him. Headphones help, because the knocking pans between your left and right ear. <a href="/games/find-tung-tung-tung-sahur#how-to-play">Full controls and steps are here</a>.',
+      },
+      {
+        q: 'What Is the Tung Tung Tung Sahur Clicker Game?',
+        a: 'Clicker — or idle — is a whole genre of Tung Tung Tung Sahur games: you tap him to earn coins, then spend them on upgrades, skins and auto-clickers that keep earning while you’re away. There is no single official one, and dozens of near-identical versions sit on browser portals and Android. Ours is called Tung Tung Clicker and is <a href="/games">still in development</a>: tap to tung, buy bigger bats, wake the planet one knock at a time. Until it’s ready, the finished game here is Find Tung Tung Tung Sahur.',
+      },
+      {
+        q: 'Is There a Tung Tung Tung Sahur Game for PC?',
+        a: 'Yes. Everything on this site runs in a desktop browser on Windows, macOS, Linux and ChromeOS, with a mouse or the arrow keys, and there’s no download and no installer. Separately, downloadable PC horror games built on the character are sold and given away on PC storefronts by unrelated developers — those aren’t connected to this site in any way.',
+      },
+      {
+        q: 'Is the Tung Tung Tung Sahur Game Free?',
+        a: 'Yes, and free with no catch: no paywall, no ads, no account, no email address and nothing to install. Your finds, best scores and daily streak save into your own browser, so nothing about you leaves your device.',
+      },
+      {
+        q: 'Is There a Tung Tung Tung Sahur Horror Game?',
+        a: 'Several, but not here. Survival-horror and escape games built on the three-calls lore are the most popular genre around the character, and they live on PC storefronts, app stores and browser portals, made by developers with no connection to this site. <a href="/tung-tung-tung-sahur">A table of which game is which</a> may help if you arrived looking for one of them. Ours is a hide-and-seek game about listening.',
+      },
+      {
+        q: 'Is the Game Suitable for Kids?',
+        a: 'Yes. No violence, no chat, no ads, no sign-up, and nothing collected about whoever is playing. The catch animation is a cartoon shout rather than a scare. Younger players usually get on best in Classic mode, which has no timer and no penalty for a wrong guess.',
+      },
+      {
+        q: 'Can I Play It at School?',
+        a: 'The game is a single static web page with no plugins and no installer, so nothing about it needs unblocking on the device itself. Whether you can reach it comes down to your school’s network filter, and no site can promise that. Turn the sound down or switch on Visual Cues if you’d rather play quietly.',
+      },
+      {
+        q: 'Is This the Official Tung Tung Tung Sahur Game?',
+        a: 'No, and there isn’t one. This is independent fan work, unaffiliated with Noxa, Mementum Lab, Spyder Games, Roblox or Epic Games. All the artwork here was drawn for this site and every sound is synthesized live in your browser.',
+      },
+    ],
+  },
+];
+
+/** Search engines get one flat FAQPage; the page keeps the grouping for humans. */
+const faqs: FaqItem[] = GROUPS.flatMap((group) => group.items);
+---
+
+<Layout
+  title="Tung Tung Tung Sahur FAQ: Meaning, Origin and Game Questions"
+  description="Answers about Tung Tung Tung Sahur: what the name and sahur mean, who created and owns him, whether he’s scary, why he was removed from Steal a Brainrot, and how to play."
+  path={FAQ_PATH}
+  image="/og/tung-tung-tung-sahur.png"
+  imageAlt="Tung Tung Tung Sahur, a wooden log with a bat, shouting in a village at night."
+  ogType="article"
+  crumbs={crumbs}
+  faq={faqs}
+  datePublished={PUBLISHED}
+  dateModified={PUBLISHED}
+>
+  <PageHeader
+    eyebrow={`FAQ · ${faqs.length} Questions`}
+    title="Tung Tung Tung Sahur: Frequently Asked Questions"
+    lead="Everything people actually ask about the wooden drummer — what his name means, who made him, who owns him, why Roblox keeps deleting him, and how the free game on this site works."
+    crumbs={crumbs}
+  >
+    <nav aria-label="Jump to a section" class="mt-8 flex flex-wrap gap-2">
+      {
+        GROUPS.map((group) => (
+          <a
+            href={`#${group.id}`}
+            class="rounded-full border border-hairline px-3 py-1.5 text-xs text-body transition-colors hover:border-transparent hover:bg-hairline-soft hover:text-ink"
+          >
+            {group.title}
+          </a>
+        ))
+      }
+    </nav>
+  </PageHeader>
+
+  <div class="mx-auto max-w-page px-4 py-16 sm:px-6 md:py-20">
+    <div class="max-w-2xl space-y-4 text-body">
+      <p>
+        Tung Tung Tung Sahur gets asked about in two very different ways. Some people want to know what the name means
+        and whether it’s poking fun at Ramadan; others want to know which of the fifty games with his face on it is worth
+        playing, or why he keeps disappearing out of <span translate="no">Steal a Brainrot</span>. Both sets are below,
+        grouped so you can skip to yours.
+      </p>
+      <p>
+        Where something is genuinely unsettled — and the question of who owns him very much is — this page says so rather
+        than picking a side. Dates and figures are current as of 18 September 2026.
+      </p>
+    </div>
+
+    <div class="mt-16 space-y-16 md:mt-20 md:space-y-20">
+      {
+        GROUPS.map((group) => (
+          <section id={group.id} aria-labelledby={`${group.id}-title`}>
+            <div class="grid gap-8 md:grid-cols-[1fr_2fr] md:gap-16">
+              <div class="md:sticky md:top-24 md:self-start">
+                <h2 id={`${group.id}-title`} class="text-heading-lg">
+                  {group.title}
+                </h2>
+                <p class="mt-3 text-sm text-body">{group.lead}</p>
+              </div>
+              <Faq items={group.items} />
+            </div>
+          </section>
+        ))
+      }
+    </div>
+
+    <section aria-labelledby="sources-title" class="mt-20 max-w-2xl">
+      <h2 id="sources-title" class="text-heading-md">Where These Answers Come From</h2>
+      <p class="mt-3 text-sm text-body">
+        Origin, creator and ownership details follow{' '}
+        <a class="link" href="https://en.wikipedia.org/wiki/Tung_Tung_Tung_Sahur" rel="noopener">Wikipedia</a> and{' '}
+        <a class="link" href="https://knowyourmeme.com/memes/tung-tung-tung-sahur" rel="noopener">Know Your Meme</a>.
+        The <span translate="no">Steal a Brainrot</span> timeline and the copyright dispute follow reporting from{' '}
+        <a class="link" href="https://www.dexerto.com/gaming/steal-a-brainrot-mascot-disappears-from-roblox-after-copyright-dispute-3252146/" rel="noopener">Dexerto</a>,{' '}
+        <a class="link" href="https://www.npr.org/2026/08/19/nx-s1-5867638/artificial-intelligence-brainrot-memes-copyright-spyder-tung-tung-sahur" rel="noopener">NPR</a>{' '}
+        and the court filings they cite. Anything about fan power rankings is community opinion and labelled as such.
+      </p>
+    </section>
+
+    <section aria-labelledby="play-title" class="card mt-16 p-6 sm:p-10">
+      <p class="eyebrow">Question Answered?</p>
+      <h2 id="play-title" class="mt-3 text-heading-lg">Now Go and Find Him</h2>
+      <p class="mt-3 max-w-xl text-body">
+        He hides somewhere in a dark village and drums. You get a lantern and your ears, and about two minutes. Free, in
+        your browser, nothing to install.
+      </p>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a href={`${FIND_PATH}#play`} class="btn btn-pill btn-primary">Play Find Tung Tung Tung Sahur</a>
+        <a href={LORE_PATH} class="btn btn-pill btn-secondary">Read the Full Story</a>
+      </div>
+    </section>
+  </div>
+</Layout>

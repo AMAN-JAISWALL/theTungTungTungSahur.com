@@ -1,11 +1,12 @@
 ---
 export interface FaqItem {
   q: string;
+  /** One paragraph. May contain inline HTML (links, <em>, <strong>) — authored here, never user input. */
   a: string;
 }
 
 interface Props {
-  items: FaqItem[];
+  items: readonly FaqItem[];
   class?: string;
 }
 
@@ -29,7 +30,7 @@ const { items, class: className } = Astro.props;
             <path d="M12 5v14M5 12h14" />
           </svg>
         </summary>
-        <p class="max-w-3xl pb-5 text-body">{item.a}</p>
+        <p class="max-w-3xl pb-5 text-body" set:html={item.a} />
       </details>
     ))
   }

@@ -1,5 +1,5 @@
 ---
-import { FIND_PATH, LORE_PATH, SITE } from '../site';
+import { FAQ_PATH, FIND_PATH, LORE_PATH, SITE, SITE_PAGES } from '../site';
 import Logo from './Logo.astro';
 
 const groups = [
@@ -15,17 +15,20 @@ const groups = [
     title: 'Site',
     links: [
       { href: LORE_PATH, label: 'Who Is He?' },
-      { href: '/about', label: 'About' },
-      { href: `${FIND_PATH}#faq`, label: 'FAQ' },
-      { href: '/privacy', label: 'Privacy' },
+      { href: FAQ_PATH, label: 'FAQ' },
+      ...SITE_PAGES.filter((page) => !page.legal),
     ],
+  },
+  {
+    title: 'Legal',
+    links: SITE_PAGES.filter((page) => page.legal),
   },
 ];
 const year = new Date().getFullYear();
 ---
 
 <footer class="border-t border-hairline">
-  <div class="mx-auto grid max-w-page gap-10 px-4 py-16 sm:px-6 md:grid-cols-[2fr_1fr_1fr]">
+  <div class="mx-auto grid max-w-page gap-10 px-4 py-16 sm:grid-cols-2 sm:px-6 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
     <div class="max-w-sm">
       <a href="/" class="inline-flex items-center gap-2.5 rounded-sm font-semibold tracking-[-0.4px]">
         <Logo class="size-7" />

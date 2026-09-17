@@ -1,0 +1,26 @@
+---
+/**
+ * The 500 page. The site builds to static files, so nothing here throws at runtime — this is
+ * the page a host points its 500 (and 502/503/504) handler at. If the site is ever rendered
+ * on demand, Astro renders this route itself whenever a request throws.
+ */
+import Layout from '../layouts/Layout.astro';
+import ErrorPage from '../components/ErrorPage.astro';
+import { CONTACT_PATH } from '../site';
+---
+
+<Layout
+  title="Something Went Wrong (500) | The Tung Tung Tung Sahur"
+  description="The server hit an error and couldn’t serve this page on thetungtungtungsahur.com. Try again in a moment, or go back to the hub and the games."
+  path="/500"
+  noindex
+>
+  <ErrorPage
+    code={500}
+    eyebrow="Error 500"
+    title="He Knocked Something Over"
+    lead="Something broke on our side, not yours. The page couldn’t be served — trying again in a moment usually clears it. If it keeps happening, the games are still where you left them."
+    cta={{ href: CONTACT_PATH, label: 'Tell Us About It' }}
+    retry
+  />
+</Layout>

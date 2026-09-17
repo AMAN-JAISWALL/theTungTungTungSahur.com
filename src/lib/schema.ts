@@ -2,7 +2,7 @@
  * JSON-LD for the site. Each page emits a single `@graph` (assembled in Layout.astro),
  * so nodes point at each other by `@id` instead of repeating themselves.
  */
-import { LORE_PATH, SITE } from '../site';
+import { CONTACT_EMAIL, CONTACT_PATH, LORE_PATH, SITE } from '../site';
 
 export interface Crumb {
   label: string;
@@ -15,6 +15,12 @@ export interface QuestionAnswer {
 }
 
 export const absolute = (path: string) => new URL(path, SITE.url).href;
+
+/**
+ * Answers are written with site-relative links for the rendered page, but JSON-LD is read
+ * away from it (Search Console, answer engines), where `/games` has no host to resolve against.
+ */
+const absolutizeLinks = (html: string) => html.replace(/href="\//g, `href="${SITE.url}/`);
 
 export const ORG_ID = `${SITE.url}/#organization`;
 const SITE_ID = `${SITE.url}/#website`;
@@ -32,6 +38,14 @@ export const organization = {
   name: SITE.name,
   url: SITE.url,
   logo: { '@type': 'ImageObject', url: absolute('/icon-512.png'), width: 512, height: 512 },
+  email: CONTACT_EMAIL,
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer support',
+    email: CONTACT_EMAIL,
+    url: absolute(CONTACT_PATH),
+    availableLanguage: 'English',
+  },
 };
 
 export const website = {
@@ -73,7 +87,7 @@ export const breadcrumbList = (path: string, items: Crumb[]) => ({
 });
 
 export interface PageGraphOptions {
-  type?: 'WebPage' | 'CollectionPage' | 'AboutPage';
+  type?: 'WebPage' | 'CollectionPage' | 'AboutPage' | 'ContactPage';
   path: string;
   name: string;
   description: string;
@@ -120,7 +134,7 @@ export function pageGraph({
     page.mainEntity = faq.map((item) => ({
       '@type': 'Question',
       name: item.q,
-      acceptedAnswer: { '@type': 'Answer', text: item.a },
+      acceptedAnswer: { '@type': 'Answer', text: `<p>${absolutizeLinks(item.a)}</p>` },
     }));
   }
 
