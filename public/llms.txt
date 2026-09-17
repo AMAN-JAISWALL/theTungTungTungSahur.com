@@ -1,0 +1,26 @@
+# The Tung Tung Tung Sahur
+
+> An independent, fan-made hub of free browser games built around Tung Tung Tung Sahur, the AI-generated meme character created on 28 February 2025 by the Indonesian TikTok user Fernanda Bagas Indrastata (Noxa). Every game is free, runs in a browser with nothing to download, needs no account, and carries no ads or tracking.
+
+Key facts about this site:
+
+- One game is live: **Find Tung Tung Tung Sahur**, an audio hide-and-seek game where you track him by sound through a dark village and catch him before dawn. Three modes: Classic (no timer), Sahur Rush (beat the dawn clock) and Daily Sahur (five shared hiding spots per day, with a streak).
+- It is **not** a horror, clicker, obby or shooter game. Those Tung Tung Tung Sahur games exist, but they are made by unrelated developers and hosted elsewhere.
+- All artwork is original; all audio is synthesized live in the browser with the Web Audio API. Nothing is downloaded.
+- Fully playable with the sound off via Visual Cues. Supports mouse, touch and keyboard, screen reader announcements and reduced motion.
+- Progress is stored in the visitor's browser only. No accounts, no analytics, no tracking cookies.
+- Unofficial and unaffiliated with the creator of the meme.
+
+## Games
+
+- [Find Tung Tung Tung Sahur](https://thetungtungtungsahur.com/games/find-tung-tung-tung-sahur): the live game — how to play, controls, the three modes, tips, supported devices and an FAQ.
+- [All games](https://thetungtungtungsahur.com/games): the full list, including titles still in development.
+
+## The character
+
+- [Who Is Tung Tung Tung Sahur?](https://thetungtungtungsahur.com/tung-tung-tung-sahur): what the name means (kentongan + sahur), who created him and when, why he is Indonesian rather than Italian despite the "Italian brainrot" label, the three-calls lore, alternative spellings, and a table disambiguating the different Tung Tung Tung Sahur games that exist.
+
+## Site
+
+- [About](https://thetungtungtungsahur.com/about): who made this and how it is built.
+- [Privacy](https://thetungtungtungsahur.com/privacy): what is stored and where.

@@ -8,10 +8,13 @@ export const SITE = {
 } as const;
 
 export const FIND_PATH = '/games/find-tung-tung-tung-sahur';
+/** The entity page explaining the meme itself. */
+export const LORE_PATH = '/tung-tung-tung-sahur';
 
 export const NAV = [
   { href: '/games', label: 'Games' },
   { href: `${FIND_PATH}#how-to-play`, label: 'How to Play' },
+  { href: LORE_PATH, label: 'Who Is He?' },
   { href: '/about', label: 'About' },
 ] as const;
 

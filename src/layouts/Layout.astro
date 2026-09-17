@@ -3,6 +3,7 @@ import { Font } from 'astro:assets';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { pageGraph, type Crumb, type PageGraphOptions, type QuestionAnswer } from '../lib/schema';
 import { SITE } from '../site';
 
 interface Props {
@@ -14,8 +15,19 @@ interface Props {
   /** Social image path under /public. */
   image?: string;
   imageAlt?: string;
-  /** JSON-LD objects for this page. */
+  /** Extra JSON-LD nodes merged into this page's @graph. */
   schema?: Record<string, unknown>[];
+  /** Schema.org type for the page node. */
+  pageType?: PageGraphOptions['type'];
+  /** Rendered breadcrumb trail; also emits BreadcrumbList. */
+  crumbs?: Crumb[];
+  /** Questions rendered on the page; also emits FAQPage. */
+  faq?: readonly QuestionAnswer[];
+  /** Whether the page is about the meme character. */
+  about?: boolean;
+  datePublished?: string;
+  dateModified?: string;
+  ogType?: 'website' | 'article';
   noindex?: boolean;
 }
 
@@ -26,11 +38,26 @@ const {
   image = '/og/default.png',
   imageAlt = 'Tung Tung Tung Sahur, a wooden log with a bat, standing in a village at night.',
   schema = [],
+  pageType,
+  crumbs,
+  faq,
+  about,
+  datePublished,
+  dateModified,
+  ogType = 'website',
   noindex = false,
 } = Astro.props;
 
 const canonical = new URL(path, SITE.url).href;
 const imageUrl = new URL(image, SITE.url).href;
+
+// One graph per page: the shared nodes first, then whatever the page adds.
+const graph = noindex
+  ? []
+  : [
+      ...pageGraph({ type: pageType, path, name: title, description, image, crumbs, faq, about, datePublished, dateModified }),
+      ...schema,
+    ];
 ---
 
 <!doctype html>
@@ -40,7 +67,16 @@ const imageUrl = new URL(image, SITE.url).href;
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    {
+      noindex ? (
+        <meta name="robots" content="noindex" />
+      ) : (
+        <Fragment>
+          <link rel="canonical" href={canonical} />
+          <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        </Fragment>
+      )
+    }
 
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content={SITE.themeColor} />
@@ -52,13 +88,14 @@ const imageUrl = new URL(image, SITE.url).href;
     <link rel="manifest" href="/site.webmanifest?v=2" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:locale" content={SITE.locale} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={imageAlt} />
@@ -72,9 +109,13 @@ const imageUrl = new URL(image, SITE.url).href;
     <Font cssVariable="--font-geist-mono" />
 
     {
-      schema.map((item) => (
-        <script is:inline type="application/ld+json" set:html={JSON.stringify(item).replace(/</g, '\\u003c')} />
-      ))
+      graph.length > 0 && (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c')}
+        />
+      )
     }
   </head>
   <body class="flex min-h-dvh flex-col overflow-x-clip">

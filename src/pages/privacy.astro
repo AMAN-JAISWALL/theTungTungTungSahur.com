@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import PageHeader from '../components/PageHeader.astro';
-import { breadcrumbSchema, type Crumb } from '../lib/schema';
+import { type Crumb } from '../lib/schema';
 import { SITE } from '../site';
 
 const updated = new Date(Date.UTC(2026, 8, 17));
@@ -44,7 +44,9 @@ const sections = [
   title="Privacy Policy | The Tung Tung Tung Sahur"
   description={`How ${SITE.name} handles your data: progress stays in your browser, with no accounts and no tracking.`}
   path="/privacy"
-  schema={[breadcrumbSchema(crumbs)]}
+  crumbs={crumbs}
+  about={false}
+  dateModified={updated.toISOString().slice(0, 10)}
 >
   <PageHeader eyebrow="Legal" title="Privacy Policy" crumbs={crumbs}>
     <p class="mt-4 font-mono text-xs text-mute">

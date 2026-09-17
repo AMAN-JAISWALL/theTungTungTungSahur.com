@@ -1,0 +1,304 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Sahur from '../components/Sahur.astro';
+import { type Crumb } from '../lib/schema';
+import { FIND_PATH, LORE_PATH } from '../site';
+
+const title = 'Who Is Tung Tung Tung Sahur?';
+const description =
+  'Tung Tung Tung Sahur explained: what the name means, who created him and when, why he’s Indonesian rather than Italian, and which games really feature him.';
+
+/** Bumped by hand when the facts on this page change. */
+const PUBLISHED = '2026-09-18';
+
+const crumbs: Crumb[] = [
+  { label: 'Home', href: '/' },
+  { label: 'Who Is He?', href: LORE_PATH },
+];
+
+const glossary = [
+  [
+    'Kentongan',
+    'A hollow wooden slit drum, struck with a stick, used across Indonesia to call a neighbourhood together. Tung Tung Tung Sahur is a kentongan with a face and legs.',
+  ],
+  [
+    'Sahur (or suhoor)',
+    'The meal eaten before first light during Ramadan, before the day’s fast begins. Someone has to wake the street up for it — hence the drumming.',
+  ],
+  [
+    'Imsak',
+    'The moment just before dawn when eating stops. It’s the deadline the drumming is racing against, and the reason the games here end at sunrise.',
+  ],
+  ['Bedug', 'The larger double-headed mosque drum used to mark prayer times. The kentongan is its portable, street-level cousin.'],
+  [
+    'Brainrot',
+    'Internet slang for deliberately absurd, low-substance content. “Italian brainrot” is the 2025 wave of AI-generated characters with sing-song fake-Italian names that Tung Tung Tung Sahur got adopted into.',
+  ],
+];
+
+const games = [
+  {
+    genre: 'Audio hide & seek',
+    what: 'Follow his drumming through a dark village and catch him before dawn. Played by ear.',
+    where: 'This site',
+    href: FIND_PATH,
+  },
+  {
+    genre: 'Survival horror / escape',
+    what: 'Escape a house or mansion while he hunts you. Puzzles, hiding spots and jumpscares.',
+    where: 'PC and console storefronts, app stores, browser portals',
+  },
+  {
+    genre: 'Clicker / idle',
+    what: 'Tap him to earn coins, then buy upgrades, skins and auto-clickers.',
+    where: 'Browser portals and Android',
+  },
+  {
+    genre: 'Obby / parkour',
+    what: 'Roblox-style obstacle courses run as the character, dodging traps.',
+    where: 'Browser portals',
+  },
+  {
+    genre: 'Shooter',
+    what: 'First-person games where you fight him off with weapons.',
+    where: 'Browser portals',
+  },
+  {
+    genre: 'Cameos',
+    what: 'He appears as a collectable or cosmetic inside much bigger games rather than starring in his own.',
+    where: 'Roblox, Fortnite',
+  },
+];
+
+const faqs: FaqItem[] = [
+  {
+    q: 'What Does Tung Tung Tung Sahur Mean?',
+    a: 'It means roughly “knock knock knock, wake up for the pre-dawn meal”. “Tung” is Indonesian onomatopoeia for a wooden drum being struck, and “sahur” is the meal eaten before sunrise during Ramadan. Put together, the name is the sound of someone walking the street banging a drum to wake the neighbourhood.',
+  },
+  {
+    q: 'Who Created Tung Tung Tung Sahur?',
+    a: 'Fernanda Bagas Indrastata, an Indonesian TikTok user posting as Noxa, who generated the image with DALL·E and posted it on 28 February 2025, the day before Ramadan began that year.',
+  },
+  {
+    q: 'Is Tung Tung Tung Sahur Italian or Indonesian?',
+    a: 'Indonesian. He is regularly grouped with “Italian brainrot” because he went viral alongside characters like Tralalero Tralala and Bombardiro Crocodilo, but the character, the drum, the language of the original voice-over and the tradition behind him are all Indonesian.',
+  },
+  {
+    q: 'How Do You Spell It? Is It Tun Tun Tun Sahur?',
+    a: 'The usual spelling is Tung Tung Tung Sahur, with a hard “g”. Tun Tun Tun Sahur and Tung Tung Sahur are common misspellings of the same character. Fans also shorten it to Triple T or T³.',
+  },
+  {
+    q: 'What Is the Tung Tung Tung Sahur Lore?',
+    a: 'The joke that made him spread: if someone calls you for sahur three times and you don’t answer, he comes to your house. That’s the whole story, and every horror game built on the character is an expansion of that one line.',
+  },
+  {
+    q: 'Is There a Tung Tung Tung Sahur Game I Can Play Right Now?',
+    a: 'Yes. Find Tung Tung Tung Sahur is free on this site, runs in a browser with nothing to download, and works on phones, tablets and computers. You track him by sound through a dark village and catch him before sunrise.',
+  },
+];
+---
+
+<Layout
+  title="Tung Tung Tung Sahur: Meaning, Origin and Lore Explained"
+  description={description}
+  path={LORE_PATH}
+  image="/og/tung-tung-tung-sahur.png"
+  imageAlt="Tung Tung Tung Sahur, a wooden log with a bat, shouting in a village at night."
+  ogType="article"
+  crumbs={crumbs}
+  faq={faqs}
+  datePublished={PUBLISHED}
+  dateModified={PUBLISHED}
+>
+  <PageHeader
+    eyebrow="The Meme"
+    title={title}
+    lead="Tung Tung Tung Sahur is an AI-generated meme character from Indonesian TikTok: a wooden slit drum with a face, two thin legs and a bat, named after the “tung tung tung” knocking that wakes people for sahur, the meal eaten before dawn during Ramadan."
+    crumbs={crumbs}
+  />
+
+  <div class="mx-auto grid max-w-page gap-12 px-4 py-16 sm:px-6 md:grid-cols-[2fr_1fr] md:py-20">
+    {/* min-w-0: a grid item defaults to min-width:auto, which would stretch this column to the
+        game table's 32rem instead of letting that table scroll inside its own card. */}
+    <div class="min-w-0 space-y-14">
+      <section aria-labelledby="name-title">
+        <h2 id="name-title" class="text-heading-lg">What the Name Means</h2>
+        <div class="mt-4 space-y-4 text-body">
+          <p>
+            The name is two halves, and neither is a word you’d find in Italian.
+          </p>
+          <p>
+            <strong class="font-medium text-ink">Tung</strong> is Indonesian onomatopoeia — the noise a{' '}
+            <em>kentongan</em> makes when you hit it. A kentongan is a hollow wooden slit drum, usually a length of
+            bamboo or a carved log, and villages and neighbourhoods across Indonesia have used them for generations as a
+            public address system: one rhythm for a meeting, another for a fire, another to wake everybody up.
+          </p>
+          <p>
+            <strong class="font-medium text-ink">Sahur</strong> (also written suhoor) is the meal eaten before first
+            light during Ramadan, before the day’s fast starts. Waking an entire street for it, in the dark, is a real
+            job that real people do — walking the roads banging drums, pots and anything else loud enough.
+          </p>
+          <p>
+            So the name isn’t nonsense. It’s a description of a sound with a purpose: three knocks, then the reason for
+            them. That’s also why we built <a class="link" href={FIND_PATH}>a game you play with your ears</a> rather
+            than another platformer.
+          </p>
+        </div>
+      </section>
+
+      <section aria-labelledby="origin-title">
+        <h2 id="origin-title" class="text-heading-lg">Who Made Him, and When</h2>
+        <div class="mt-4 space-y-4 text-body">
+          <p>
+            He was created by <strong class="font-medium text-ink">Fernanda Bagas Indrastata</strong>, an Indonesian
+            TikTok user who posts as <strong class="font-medium text-ink">Noxa</strong>. On{' '}
+            <strong class="font-medium text-ink">28 February 2025</strong> — one day before Ramadan began in Indonesia
+            that year — he asked DALL·E for a sahur drum with a face and legs, picked the image he liked best and posted
+            it with an Indonesian text-to-speech voice-over.
+          </p>
+          <p>
+            It was part of a local trend of “anomali” AI characters: absurd generated creatures with strange names and
+            repetitive audio. Within weeks the character had escaped Indonesian TikTok entirely.
+          </p>
+          <p class="text-sm text-mute">
+            Sources: <a class="link" href="https://en.wikipedia.org/wiki/Tung_Tung_Tung_Sahur" rel="noopener">Wikipedia</a>{' '}
+            and <a class="link" href="https://knowyourmeme.com/memes/tung-tung-tung-sahur" rel="noopener">Know Your Meme</a>.
+          </p>
+        </div>
+      </section>
+
+      <section aria-labelledby="italian-title">
+        <h2 id="italian-title" class="text-heading-lg">Is He Italian or Indonesian?</h2>
+        <div class="mt-4 space-y-4 text-body">
+          <p>
+            <strong class="font-medium text-ink">Indonesian.</strong> This is the single most common confusion about
+            him, and the answer isn’t complicated.
+          </p>
+          <p>
+            He went viral at the same moment as “Italian brainrot” — the early-2025 wave of AI-generated characters with
+            sing-song pseudo-Italian names like Tralalero Tralala, Bombardiro Crocodilo and Ballerina Cappuccina. The
+            genre got named after the loudest members, and everything that arrived alongside it got filed under the same
+            label. So Tung Tung Tung Sahur is usually listed as an Italian brainrot character despite the creator, the
+            language, the drum and the tradition all being Indonesian.
+          </p>
+        </div>
+      </section>
+
+      <section aria-labelledby="lore-title">
+        <h2 id="lore-title" class="text-heading-lg">The Lore, in One Sentence</h2>
+        <div class="mt-4 space-y-4 text-body">
+          <blockquote class="border-l-2 border-lantern pl-5 text-lg text-ink">
+            If someone calls you for sahur three times and you don’t answer, he comes to your house.
+          </blockquote>
+          <p>
+            That’s it. That’s the whole story, and it’s doing a lot of work: it explains the three tungs in his name, it
+            turns an ordinary wake-up call into a threat, and it gives every horror game built on the character its
+            premise. It also lands the same way the original tradition does — when the drumming starts, you had better
+            be awake.
+          </p>
+        </div>
+      </section>
+
+      <section aria-labelledby="names-title">
+        <h2 id="names-title" class="text-heading-lg">Other Names and Spellings</h2>
+        <div class="mt-4 space-y-4 text-body">
+          <p>
+            The name is long and easy to mangle, so he answers to a lot of things.{' '}
+            <strong class="font-medium text-ink">Triple T</strong> and <strong class="font-medium text-ink">T³</strong>{' '}
+            are the common shortenings. <strong class="font-medium text-ink">TTT Sahur</strong>,{' '}
+            <strong class="font-medium text-ink">Tung Tung Sahur</strong> and{' '}
+            <strong class="font-medium text-ink">Tun Tun Tun Sahur</strong> all refer to the same character — the last
+            one is a misspelling, since the “g” is what makes the drum sound.
+          </p>
+          <p>
+            You’ll also see the name stretched out with extra tungs as a joke, which is how queries like “tung tung tung
+            tung sahur” end up in search boxes. They’re all him.
+          </p>
+        </div>
+      </section>
+
+      <section aria-labelledby="which-title">
+        <h2 id="which-title" class="text-heading-lg">Which Tung Tung Tung Sahur Game Is Which?</h2>
+        <p class="mt-4 text-body">
+          There is no single official game. Unrelated developers have built completely different games around him, and
+          search results mix them all together. Here’s what actually exists, so you can find the one you meant.
+        </p>
+        <div class="card mt-6 overflow-x-auto">
+          <table class="w-full min-w-[32rem] text-left text-sm">
+            <thead>
+              <tr class="border-b border-hairline">
+                <th scope="col" class="px-5 py-3 font-medium">Type of game</th>
+                <th scope="col" class="px-5 py-3 font-medium">What you do</th>
+                <th scope="col" class="px-5 py-3 font-medium">Where it lives</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-hairline">
+              {
+                games.map((game) => (
+                  <tr>
+                    <th scope="row" class="px-5 py-4 align-top font-medium">
+                      {game.href ? (
+                        <a class="link" href={game.href}>
+                          {game.genre}
+                        </a>
+                      ) : (
+                        game.genre
+                      )}
+                    </th>
+                    <td class="px-5 py-4 align-top text-body">{game.what}</td>
+                    <td class="px-5 py-4 align-top text-mute">{game.where}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-4 text-sm text-mute">
+          Ours is the first row, and it’s the only one on this site. If you came looking for the horror or clicker
+          games, they’re somebody else’s — we have no connection to them.
+        </p>
+      </section>
+
+      <section aria-labelledby="glossary-title">
+        <h2 id="glossary-title" class="text-heading-lg">Words Worth Knowing</h2>
+        <dl class="mt-6 grid gap-px overflow-hidden rounded-md border border-hairline bg-hairline">
+          {
+            glossary.map(([term, meaning]) => (
+              <div class="bg-canvas p-5">
+                <dt class="text-label">{term}</dt>
+                <dd class="mt-1 text-sm text-body">{meaning}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </section>
+
+      <section aria-labelledby="lore-faq-title">
+        <h2 id="lore-faq-title" class="text-heading-lg">Frequently Asked</h2>
+        <Faq items={faqs} class="mt-6" />
+      </section>
+
+      <section aria-labelledby="play-title" class="card p-6 sm:p-10">
+        <p class="eyebrow">Now the Fun Part</p>
+        <h2 id="play-title" class="mt-3 text-heading-lg">Hear Him for Yourself</h2>
+        <p class="mt-3 max-w-xl text-body">
+          Find Tung Tung Tung Sahur is free, runs in your browser and takes about two minutes. He hides somewhere in a
+          dark village and drums. You have a lantern and your ears.
+        </p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a href={`${FIND_PATH}#play`} class="btn btn-pill btn-primary">Play Find Tung Tung Tung Sahur</a>
+          <a href="/games" class="btn btn-pill btn-secondary">See All Games</a>
+        </div>
+      </section>
+    </div>
+
+    <div class="relative hidden md:block" aria-hidden="true">
+      <div class="sticky top-24 grid place-items-center rounded-lg border border-hairline bg-elevated p-10">
+        <div class="absolute inset-0 rounded-lg bg-[radial-gradient(circle_at_50%_45%,rgb(255_181_71/0.16),transparent_60%)]"></div>
+        <Sahur class="relative w-40" mood="shout" />
+      </div>
+    </div>
+  </div>
+</Layout>

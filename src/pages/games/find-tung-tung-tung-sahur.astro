@@ -4,11 +4,13 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Faq, { type FaqItem } from '../../components/Faq.astro';
 import GameCard from '../../components/GameCard.astro';
 import FindGame from '../../components/find/FindGame.astro';
-import { breadcrumbSchema, organization, type Crumb } from '../../lib/schema';
+import { absolute, CHARACTER_ID, ORG_ID, pageId, ref, type Crumb } from '../../lib/schema';
 import { DAILY_MISS_PENALTY, RUSH } from '../../scripts/find/modes';
-import { FIND_PATH, LIVE_GAMES, SITE, SOON_GAMES } from '../../site';
+import { FIND_PATH, LIVE_GAMES, LORE_PATH, SOON_GAMES } from '../../site';
 
 const title = 'Find Tung Tung Tung Sahur';
+/** Launch day, matching the first Daily Sahur in scripts/find/modes.ts. */
+const RELEASED = '2026-09-17';
 const description =
   'Play Find Tung Tung Tung Sahur free. He’s hiding in the dark: follow the tung tung tung, catch him before dawn and keep your daily streak. Works on phones.';
 
@@ -75,6 +77,23 @@ const extras = [
   },
 ];
 
+const tips = [
+  'Put headphones on. Without them you only hear how close you are; with them you also hear which side he’s on.',
+  'Sweep in long horizontal passes rather than wandering. Covering the screen in a grid beats chasing a hunch.',
+  'Judge the gaps, not the volume. The knocks speed up long before they get noticeably louder.',
+  'Wait for the drumroll. When the tung runs into one continuous roll and two eyes glint, you’re on him.',
+  'Ignore anything metallic. A pot-banger goes “klang”, not “tung”, and clicking one costs you time.',
+  `Hunt the Golden Sahur. He rings like a bell, scores double, and in Sahur Rush he adds extra seconds to the dawn clock.`,
+  `In Daily Sahur, a wrong click adds ${DAILY_MISS_PENALTY} seconds to your final time, so one patient sweep beats three quick guesses.`,
+];
+
+const devices = [
+  ['Desktop & laptop', 'Windows, macOS, Linux and ChromeOS in Chrome, Edge, Firefox or Safari. Mouse or arrow keys.'],
+  ['Phones & tablets', 'Android and iOS. Drag to search and lift your finger to catch. Android phones also vibrate harder as you close in.'],
+  ['School Chromebooks', 'It’s one static page with no plugins, no Flash and no installer, so it runs wherever the network allows the site.'],
+  ['Requirements', 'A modern browser. Nothing to download, no account, and roughly 200 KB of page to load.'],
+];
+
 const faqs: FaqItem[] = [
   {
     q: 'How Do You Play Find Tung Tung Tung Sahur?',
@@ -101,37 +120,82 @@ const faqs: FaqItem[] = [
     a: 'It’s free, with no account and no download. Your finds, best scores and streak are saved in your browser, so clearing site data resets them.',
   },
   {
+    q: 'Is This a Horror Game? Is It Scary?',
+    a: 'No. It’s set at night and it gets tense when the drumming speeds up, but there are no jumpscares, no gore and nothing chasing you. The survival horror games built around this meme are different games on other sites. This one is a hide-and-seek game about listening.',
+  },
+  {
+    q: 'Is It Suitable for Kids?',
+    a: 'Yes. There’s no violence, no chat, no ads and no sign-up, and nothing is collected about whoever is playing. The catch animation is a cartoon shout, not a scare. Younger players usually do best in Classic mode, which has no timer.',
+  },
+  {
+    q: 'Can I Play It at School?',
+    a: 'The game is one static web page with no plugins and no installer, so nothing about it needs unblocking on the device itself. Whether you can reach it comes down to your school’s network filter, and no site can promise that. Turn the sound down or switch on Visual Cues if you’d rather play quietly.',
+  },
+  {
+    q: 'Who Is Tung Tung Tung Sahur?',
+    a: 'He’s an AI-generated meme character posted to TikTok on 28 February 2025 by the Indonesian creator Fernanda Bagas Indrastata, known as Noxa. He’s a kentongan, the wooden slit drum used across Indonesia to wake people for sahur, the meal eaten before dawn during Ramadan. His name is the sound the drum makes.',
+  },
+  {
     q: 'Is This the Official Tung Tung Tung Sahur Game?',
     a: 'No. It’s an independent, fan-made game inspired by the meme. The artwork is original, and every sound is generated live in your browser.',
   },
 ];
 
 const videoGame = {
-  '@context': 'https://schema.org',
+  // VideoGame is a subclass of SoftwareApplication, so the app properties below are valid here.
   '@type': 'VideoGame',
+  '@id': `${absolute(FIND_PATH)}#game`,
   name: title,
   description,
-  url: `${SITE.url}${FIND_PATH}`,
-  image: `${SITE.url}/og/find-tung-tung-tung-sahur.png`,
+  url: absolute(FIND_PATH),
+  image: absolute('/og/find-tung-tung-tung-sahur.png'),
+  // No `screenshot`: the only 1200x630 asset is a social card, not a capture of the game.
   genre: ['Casual', 'Hide and seek', 'Audio game'],
-  gamePlatform: ['Web browser', 'Android', 'iOS', 'Windows', 'macOS'],
+  gamePlatform: ['Web browser', 'Android', 'iOS', 'Windows', 'macOS', 'ChromeOS'],
   applicationCategory: 'GameApplication',
   operatingSystem: 'Any',
   playMode: 'SinglePlayer',
+  numberOfPlayers: { '@type': 'QuantitativeValue', value: 1 },
   inLanguage: 'en',
+  datePublished: RELEASED,
   isAccessibleForFree: true,
-  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-  publisher: organization,
+  accessibilitySummary:
+    'Fully playable without sound: Visual Cues replace the audio with a heat meter and a lantern that shifts colour. Supports mouse, touch and keyboard, announces progress to screen readers, and honours reduced-motion settings.',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
+  author: ref(ORG_ID),
+  publisher: ref(ORG_ID),
+  about: ref(CHARACTER_ID),
+  mainEntityOfPage: ref(pageId(FIND_PATH)),
+};
+
+const howTo = {
+  '@type': 'HowTo',
+  '@id': `${absolute(FIND_PATH)}#howto`,
+  name: 'How to play Find Tung Tung Tung Sahur',
+  description:
+    'Track Tung Tung Tung Sahur by sound through a dark village and catch him before sunrise, using a mouse, a finger or the arrow keys.',
+  totalTime: 'PT2M',
+  step: steps.map((step, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: step.title,
+    text: step.body,
+    url: `${absolute(FIND_PATH)}#how-to-play`,
+  })),
+  mainEntityOfPage: ref(pageId(FIND_PATH)),
 };
 ---
 
 <Layout
-  title={`${title} – Free Online Sound Game`}
+  title={`${title} – Free Hide and Seek Sound Game`}
   description={description}
   path={FIND_PATH}
   image="/og/find-tung-tung-tung-sahur.png"
   imageAlt="Two glowing eyes in a dark village and a lantern: Find Tung Tung Tung Sahur."
-  schema={[videoGame, breadcrumbSchema(crumbs)]}
+  crumbs={crumbs}
+  faq={faqs}
+  datePublished={RELEASED}
+  schema={[videoGame, howTo]}
 >
   <div class="mx-auto max-w-page px-3 pt-5 sm:px-6 sm:pt-8">
     <Breadcrumbs items={crumbs} class="px-1 sm:px-0" />
@@ -216,13 +280,78 @@ const videoGame = {
     </ul>
   </section>
 
+  <section id="tips" aria-labelledby="tips-title" class="mx-auto max-w-page px-4 pt-24 sm:px-6 md:pt-32">
+    <div class="grid gap-8 md:grid-cols-[1fr_2fr] md:gap-16">
+      <div>
+        <p class="eyebrow">Tips</p>
+        <h2 id="tips-title" class="mt-3 text-heading-lg">How to Find Him Faster</h2>
+        <p class="mt-3 text-body">
+          Most people hunt with their eyes on the first night. The players with the best times stop looking and start
+          listening.
+        </p>
+      </div>
+      <ol class="grid gap-3 sm:grid-cols-2">
+        {
+          tips.map((tip, i) => (
+            <li class="card flex gap-4 p-5">
+              <span class="grid size-7 shrink-0 place-items-center rounded-full border border-hairline font-mono text-xs text-body">
+                {i + 1}
+              </span>
+              <p class="text-sm text-body">{tip}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section id="devices" aria-labelledby="devices-title" class="mx-auto max-w-page px-4 pt-24 sm:px-6 md:pt-32">
+    <p class="eyebrow">Devices</p>
+    <h2 id="devices-title" class="mt-3 text-heading-lg">Where It Runs</h2>
+    <p class="mt-3 max-w-2xl text-body">
+      There’s no app, no APK and no installer. It’s a web page, so if the browser opens, the game plays.
+    </p>
+    <div class="card mt-10 overflow-hidden">
+      <dl class="divide-y divide-hairline text-sm">
+        {
+          devices.map(([where, what]) => (
+            <div class="flex flex-col gap-1 px-6 py-4 sm:flex-row sm:gap-8">
+              <dt class="w-44 shrink-0 font-medium">{where}</dt>
+              <dd class="text-body">{what}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <section aria-labelledby="story-title" class="mx-auto max-w-page px-4 pt-24 sm:px-6 md:pt-32">
+    <div class="card grid gap-6 p-6 sm:p-10 md:grid-cols-[1.2fr_1fr] md:items-center md:gap-12">
+      <div>
+        <p class="eyebrow">The Story</p>
+        <h2 id="story-title" class="mt-3 text-heading-lg">Why a Game You Play by Ear</h2>
+        <p class="mt-4 text-body">
+          Because the character is a drum. Tung Tung Tung Sahur is a <em>kentongan</em>, the hollow wooden slit drum
+          that neighbourhoods in Indonesia bang before dawn during Ramadan to wake everyone for sahur, and his name is
+          just the noise it makes. A meme whose entire identity is a sound deserved a game you win with your ears rather
+          than your eyes.
+        </p>
+      </div>
+      <div class="md:text-right">
+        <a href={LORE_PATH} class="btn btn-pill btn-secondary">Who Is Tung Tung Tung Sahur? →</a>
+      </div>
+    </div>
+  </section>
+
   <section id="faq" aria-labelledby="faq-title" class="mx-auto max-w-page px-4 pt-24 sm:px-6 md:pt-32">
     <div class="grid gap-8 md:grid-cols-[1fr_2fr] md:gap-16">
       <div>
         <p class="eyebrow">FAQ</p>
         <h2 id="faq-title" class="mt-3 text-heading-lg">Questions, Answered</h2>
         <p class="mt-3 text-body">
-          Still stuck? The <a class="link" href="/about">about page</a> explains who made this and why.
+          Curious about the meme instead? <a class="link" href={LORE_PATH}>What Tung Tung Tung Sahur means</a> covers
+          the name, the origin and the lore. The <a class="link" href="/about">about page</a> explains who made this and
+          why.
         </p>
       </div>
       <Faq items={faqs} />

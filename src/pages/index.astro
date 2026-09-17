@@ -3,27 +3,61 @@ import Layout from '../layouts/Layout.astro';
 import GameCard from '../components/GameCard.astro';
 import NightScene from '../components/NightScene.astro';
 import Sahur from '../components/Sahur.astro';
-import { websiteSchema } from '../lib/schema';
-import { FIND_PATH, LIVE_GAMES, SITE, SOON_GAMES } from '../site';
+import Faq, { type FaqItem } from '../components/Faq.astro';
+import { absolute } from '../lib/schema';
+import { FIND_PATH, LIVE_GAMES, LORE_PATH, SOON_GAMES } from '../site';
 
 const itemList = {
-  '@context': 'https://schema.org',
   '@type': 'ItemList',
+  '@id': `${absolute('/')}#games`,
   name: 'Tung Tung Tung Sahur games',
   itemListElement: LIVE_GAMES.map((game, i) => ({
     '@type': 'ListItem',
     position: i + 1,
     name: game.name,
-    url: new URL(game.href!, SITE.url).href,
+    url: absolute(game.href!),
   })),
 };
+
+const reasons = [
+  { title: 'Free, With No Catch', body: 'No paywall, no ads, no account and no email. Click Play and you’re in.' },
+  { title: 'Nothing to Download', body: 'There’s no app, no APK and no install. The games are web pages that start in a click.' },
+  { title: 'Original Artwork', body: 'Every drawing on this site was made for it. Nothing is lifted from someone else’s game.' },
+  { title: 'Sound Made Live', body: 'Every knock, klang and fanfare is synthesized in your browser with the Web Audio API.' },
+  { title: 'Playable Muted', body: 'Visual cues stand in for the audio, with screen reader announcements and reduced-motion support.' },
+  { title: 'Your Data Stays Here', body: 'Progress saves to your browser. No accounts, no analytics and no tracking cookies.' },
+];
+
+const faqs: FaqItem[] = [
+  {
+    q: 'Is There a Free Tung Tung Tung Sahur Game Online?',
+    a: 'Yes. Every game on this site is free to play in a browser, with no account and no download. The one that’s live right now is Find Tung Tung Tung Sahur, a hide-and-seek game you play by ear: follow the drumming through a dark village and catch him before sunrise.',
+  },
+  {
+    q: 'Do I Need to Download Anything?',
+    a: 'No. There’s no app, no APK and nothing to install. The whole game is a web page, and the sound is generated in your browser rather than downloaded as audio files, so the first knock plays almost instantly.',
+  },
+  {
+    q: 'Does It Work on Phones, Tablets and School Chromebooks?',
+    a: 'Yes. It runs in any modern browser on Android, iOS, Windows, macOS and ChromeOS, with mouse, touch and keyboard controls. It’s a single static page with no plugins, so it works on locked-down school Chromebooks wherever the network allows the site.',
+  },
+  {
+    q: 'Is the Tung Tung Tung Sahur Game Scary?',
+    a: 'Not really. It’s set at night and it gets tense when the drumming speeds up, but there are no jumpscares, no gore and nothing chasing you. If you came looking for the survival horror games built around this meme, this isn’t one of them.',
+  },
+  {
+    q: 'Is This the Official Tung Tung Tung Sahur Game?',
+    a: 'No. This is an independent, fan-made site. It isn’t affiliated with the creator of the meme, and it isn’t connected to the horror, clicker, obby or shooter games hosted on other sites.',
+  },
+];
 ---
 
 <Layout
-  title="Tung Tung Tung Sahur Games – Play Free Online"
-  description="Free Tung Tung Tung Sahur games in your browser. Start with Find Tung Tung Tung Sahur: follow the drumming in the dark and catch him before dawn."
+  title="Tung Tung Tung Sahur Game: Play Free Online, No Download"
+  description="Free Tung Tung Tung Sahur games in your browser, with no download. Follow his drumming through the dark and catch him before dawn. Works on phones and PC."
   path="/"
-  schema={[websiteSchema, itemList]}
+  faq={faqs}
+  schema={[itemList]}
 >
   <section class="relative isolate overflow-hidden border-b border-hairline">
     <NightScene id="hero" stars={80} class="-z-20" />
@@ -35,14 +69,17 @@ const itemList = {
       <div>
         <p class="eyebrow">Game Hub · Free · No Download</p>
         <h1 class="mt-5 text-display-sm sm:text-display lg:text-display-lg">
-          <span class="knock">Tung.</span>{' '}
-          <span class="knock">Tung.</span>{' '}
-          <span class="knock">Tung.</span>{' '}
-          <span class="block text-body">Sahur games, after&nbsp;dark.</span>
+          <span class="knock">Tung</span>{' '}
+          <span class="knock">Tung</span>{' '}
+          <span class="knock">Tung</span>{' '}
+          <span class="knock">Sahur</span>{' '}
+          {/* No .knock here: that rule sets inline-block and would beat this span's `block`. */}
+          <span class="block text-body">Games, after&nbsp;dark.</span>
         </h1>
         <p class="mt-6 max-w-xl text-lg text-body">
-          Free browser games starring the internet’s favorite wooden drummer. The first one is live: he’s hiding in the
-          dark, and all you have is a lantern and your ears.
+          Free browser games starring the internet’s favorite wooden drummer. Nothing to download, no account, no ads,
+          and they play on phones, tablets and PCs. The first one is live: he’s hiding in the dark, and all you have is
+          a lantern and your ears.
         </p>
         <div class="mt-8 flex flex-col gap-3 sm:flex-row">
           <a href={`${FIND_PATH}#play`} class="btn btn-pill btn-primary">
@@ -86,6 +123,25 @@ const itemList = {
     </div>
   </section>
 
+  <section aria-labelledby="why-title" class="mx-auto max-w-page px-4 pb-20 sm:px-6 md:pb-28">
+    <p class="eyebrow">Why Play Here</p>
+    <h2 id="why-title" class="mt-3 text-heading-lg">A Fan Game, Not a Game Portal</h2>
+    <p class="mt-3 max-w-xl text-body">
+      There are dozens of Tung Tung Tung Sahur games scattered across ad-heavy portals. These are ours, made from
+      scratch.
+    </p>
+    <ul class="mt-10 grid gap-px overflow-hidden rounded-md border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3">
+      {
+        reasons.map((reason) => (
+          <li class="bg-canvas p-6">
+            <h3 class="text-label">{reason.title}</h3>
+            <p class="mt-1 text-sm text-body">{reason.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
   <section aria-labelledby="legend-title" class="border-y border-hairline bg-elevated/50">
     <div class="mx-auto grid max-w-page gap-8 px-4 py-20 sm:px-6 md:grid-cols-[1fr_1.3fr] md:gap-16 md:py-28">
       <div>
@@ -94,19 +150,38 @@ const itemList = {
       </div>
       <div class="space-y-4 text-body md:text-lg">
         <p>
-          Tung Tung Tung Sahur is a meme character that went viral in 2025: a wooden figure with a baseball bat and a stare
-          you won’t forget. His name comes from the “tung tung tung” knocking that wakes people up for sahur, the meal
-          eaten before dawn during Ramadan, especially in Indonesia.
+          Tung Tung Tung Sahur is an AI-generated meme character posted on 28 February 2025 by the Indonesian TikTok user
+          Fernanda Bagas Indrastata, who goes by Noxa. He’s a <em>kentongan</em> — the hollow wooden slit drum that
+          neighbourhoods across Indonesia bang to wake everyone for sahur, the meal eaten before dawn during Ramadan —
+          given a face, two thin legs and a bat.
         </p>
         <p>
-          The joke is simple. When the drumming starts, you’d better be awake. This hub turns that into quick games you
-          can play on any device, for free.
+          His name is just the sound he makes. Tung, tung, tung: three knocks. The lore says that if you’re called for
+          sahur three times and you still don’t answer, he turns up at your house. That one joke carried him off
+          Indonesian TikTok and into “Italian brainrot”, the wave of absurd AI characters he now shares a stage with.
         </p>
         <p>
-          <a class="link font-medium" href={FIND_PATH}>Start with Find Tung Tung Tung Sahur</a>, a hide-and-seek game you
-          play with your ears.
+          Which makes him an unusual thing to build a game around, because the character <em>is</em> a drum. The
+          meme <em>is</em> a sound. So we made a game you play with your ears.
+        </p>
+        <p class="flex flex-col gap-1 text-base sm:flex-row sm:gap-5">
+          <a class="link font-medium" href={LORE_PATH}>Read the full story →</a>
+          <a class="link font-medium" href={FIND_PATH}>Play Find Tung Tung Tung Sahur →</a>
         </p>
       </div>
+    </div>
+  </section>
+
+  <section id="faq" aria-labelledby="faq-title" class="mx-auto max-w-page px-4 py-20 sm:px-6 md:py-28">
+    <div class="grid gap-8 md:grid-cols-[1fr_2fr] md:gap-16">
+      <div>
+        <p class="eyebrow">FAQ</p>
+        <h2 id="faq-title" class="mt-3 text-heading-lg">Common Questions</h2>
+        <p class="mt-3 text-body">
+          More about the game itself on the <a class="link" href={`${FIND_PATH}#faq`}>Find Tung Tung Tung Sahur page</a>.
+        </p>
+      </div>
+      <Faq items={faqs} />
     </div>
   </section>
 
@@ -161,10 +236,13 @@ const itemList = {
     animation: knock 520ms cubic-bezier(0.3, 1.6, 0.5, 1) both;
   }
   .knock:nth-child(2) {
-    animation-delay: 220ms;
+    animation-delay: 150ms;
   }
   .knock:nth-child(3) {
-    animation-delay: 440ms;
+    animation-delay: 300ms;
+  }
+  .knock:nth-child(4) {
+    animation-delay: 450ms;
   }
   @keyframes knock {
     from {

@@ -2,32 +2,37 @@
 import Layout from '../../layouts/Layout.astro';
 import GameCard from '../../components/GameCard.astro';
 import PageHeader from '../../components/PageHeader.astro';
-import { breadcrumbSchema, type Crumb } from '../../lib/schema';
-import { GAMES, LIVE_GAMES, SITE, SOON_GAMES } from '../../site';
+import { absolute, type Crumb } from '../../lib/schema';
+import { FIND_PATH, GAMES, LIVE_GAMES, LORE_PATH, SOON_GAMES } from '../../site';
 
 const crumbs: Crumb[] = [
   { label: 'Home', href: '/' },
   { label: 'Games', href: '/games' },
 ];
 
-const collection = {
-  '@context': 'https://schema.org',
-  '@type': 'CollectionPage',
+const itemList = {
+  '@type': 'ItemList',
+  '@id': `${absolute('/games')}#games`,
   name: 'All Tung Tung Tung Sahur games',
-  url: `${SITE.url}/games`,
-  hasPart: LIVE_GAMES.map((game) => ({
-    '@type': 'VideoGame',
+  numberOfItems: LIVE_GAMES.length,
+  itemListElement: LIVE_GAMES.map((game, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
     name: game.name,
-    url: new URL(game.href!, SITE.url).href,
+    url: absolute(game.href!),
   })),
 };
 ---
 
 <Layout
-  title="All Tung Tung Tung Sahur Games | The Tung Tung Tung Sahur"
-  description="Every Tung Tung Tung Sahur game on the hub: play Find Tung Tung Tung Sahur free now, with Runner, Rhythm and more on the way."
+  title="All Tung Tung Tung Sahur Games – Free to Play Online"
+  description="Every Tung Tung Tung Sahur game on the hub: play Find Tung Tung Tung Sahur free now, with Runner, Rhythm, Clicker and more on the way."
   path="/games"
-  schema={[collection, breadcrumbSchema(crumbs)]}
+  image="/og/games.png"
+  imageAlt="Tung Tung Tung Sahur standing in a village at night: every Tung Tung Tung Sahur game on the hub."
+  pageType="CollectionPage"
+  crumbs={crumbs}
+  schema={[itemList]}
 >
   <PageHeader
     eyebrow={`${GAMES.length} Games · ${LIVE_GAMES.length} Live`}
@@ -35,6 +40,22 @@ const collection = {
     lead="Free games you can play in a few minutes, on any device. Pick one and turn your sound on."
     crumbs={crumbs}
   />
+
+  <div class="mx-auto max-w-page px-4 pt-14 sm:px-6">
+    <div class="max-w-2xl space-y-4 text-body">
+      <p>
+        This is a small, independent hub built around one meme character, so the list is short on purpose. Every game
+        here runs in your browser, costs nothing, and needs no account, no install and no plugin — which means it works
+        on a phone, a tablet, a school Chromebook or a desktop PC.
+      </p>
+      <p>
+        One game is finished and playable today: <a class="link" href={FIND_PATH}>Find Tung Tung Tung Sahur</a>, an
+        audio hide-and-seek game. The rest are real plans rather than release dates — they’re listed so you can see
+        where this is going, and each one goes live here the day it’s ready. New to the character?{' '}
+        <a class="link" href={LORE_PATH}>Start with who he is</a>.
+      </p>
+    </div>
+  </div>
 
   <section aria-labelledby="live-title" class="mx-auto max-w-page px-4 pt-14 sm:px-6">
     <h2 id="live-title" class="eyebrow">Play Now</h2>

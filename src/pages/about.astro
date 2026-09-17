@@ -2,8 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Sahur from '../components/Sahur.astro';
-import { breadcrumbSchema, type Crumb } from '../lib/schema';
-import { FIND_PATH, SITE } from '../site';
+import { type Crumb } from '../lib/schema';
+import { FIND_PATH, LORE_PATH, SITE } from '../site';
 
 const crumbs: Crumb[] = [
   { label: 'Home', href: '/' },
@@ -19,10 +19,13 @@ const principles = [
 ---
 
 <Layout
-  title="About | The Tung Tung Tung Sahur"
+  title="About The Tung Tung Tung Sahur Game Hub"
   description="The Tung Tung Tung Sahur is an independent, fan-made hub of free browser games built around the Tung Tung Tung Sahur meme."
   path="/about"
-  schema={[breadcrumbSchema(crumbs)]}
+  image="/og/about.png"
+  imageAlt="Tung Tung Tung Sahur in a village at night: about this fan-made game hub."
+  pageType="AboutPage"
+  crumbs={crumbs}
 >
   <PageHeader
     eyebrow="About"
@@ -38,7 +41,8 @@ const principles = [
         <div class="mt-4 space-y-4 text-body">
           <p>
             The meme is all about sound: a wooden drummer knocking “tung tung tung” before dawn. That makes it a perfect fit
-            for games you play with your ears as much as your eyes.
+            for games you play with your ears as much as your eyes. (If you’re new to him,{' '}
+            <a class="link" href={LORE_PATH}>here’s what Tung Tung Tung Sahur actually means</a>.)
           </p>
           <p>
             The first game, <a class="link" href={FIND_PATH}>Find Tung Tung Tung Sahur</a>, takes the classic audio
@@ -64,10 +68,19 @@ const principles = [
 
       <section aria-labelledby="made-title">
         <h2 id="made-title" class="text-heading-md">How It’s Made</h2>
-        <p class="mt-4 text-body">
-          Every drawing on this site is original. Every knock, klang and fanfare is synthesized live with the Web Audio
-          API, so there’s nothing to download and the first sound plays instantly.
-        </p>
+        <div class="mt-4 space-y-4 text-body">
+          <p>
+            Every drawing on this site is original, hand-built as inline SVG rather than exported from anywhere. Every
+            knock, klang and fanfare is synthesized live with the Web Audio API, so there are no audio files to download
+            and the first sound plays instantly.
+          </p>
+          <p>
+            The site itself is static HTML generated with Astro. There’s no framework shipped to your browser, no ad
+            network, no consent banner and no third-party scripts of any kind — which is why pages load fast and why
+            there’s nothing here that could follow you around. Game progress is written to your browser’s local storage
+            and never leaves your device.
+          </p>
+        </div>
       </section>
 
       <section aria-labelledby="disclaimer-title">

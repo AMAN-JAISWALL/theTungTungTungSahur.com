@@ -85,21 +85,43 @@ function nightBackdrop(id: string, w: number, h: number): string {
   <svg x="0" y="${h - 190}" width="${w}" height="190" viewBox="0 0 1600 300" preserveAspectRatio="xMidYMax slice">${resolveVars(skylineMarkup(id))}</svg>`;
 }
 
-function ogHub(): string {
+interface OgSpec {
+  /** Prefix for the gradient and filter ids inside this one file. */
+  id: string;
+  eyebrow: string;
+  /** Headline, pre-wrapped. Keep each line under ~19 characters so it clears the artwork. */
+  lines: string[];
+  size?: number;
+  /** Second-tier line under the headline. */
+  sub?: string;
+  cta: string;
+  mood?: Mood;
+}
+
+/** The shared text-left / character-right Open Graph card. */
+function ogCard({ id, eyebrow, lines, size = 76, sub, cta, mood = 'idle' }: OgSpec): string {
   const w = 1200;
   const h = 630;
+  const step = Math.round(size * 1.08);
+  // Centre the headline block on y≈300, leaving room for the eyebrow above and the CTA below.
+  const first = Math.round(300 - ((lines.length - 1) * step) / 2);
+  const last = first + (lines.length - 1) * step;
+  const headline = lines
+    .map((line, i) => `<tspan x="68" y="${first + i * step}" font-size="${size}">${line}</tspan>`)
+    .join('');
+  // sharp renders <text> without auto-width, so the pill is sized from the label.
+  const ctaWidth = Math.round(cta.length * 12.6 + 60);
+
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
-  ${nightBackdrop('hub', w, h)}
+  ${nightBackdrop(id, w, h)}
   <rect width="${w}" height="${h}" fill="#03040a" opacity=".25"/>
-  <circle cx="930" cy="330" r="220" fill="#ffb547" opacity=".16" filter="url(#hub-blur)"/>
-  ${character(815, 118, 230, 'idle')}
-  <text x="72" y="118" font-family="${MONO}" font-size="21" font-weight="500" fill="#8a8d9b" letter-spacing="1.5">GAME HUB · FREE · NO DOWNLOAD</text>
-  <text font-family="${SANS}" font-weight="600" fill="#ededf2">
-    <tspan x="68" y="236" font-size="92" letter-spacing="-4.4">Tung. Tung. Tung.</tspan>
-    <tspan x="70" y="316" font-size="62" letter-spacing="-2.8" fill="#a3a6b4">Sahur games, after dark.</tspan>
-  </text>
-  <rect x="72" y="374" width="244" height="60" rx="30" fill="#ededf2"/>
-  <text x="194" y="412" text-anchor="middle" font-family="${SANS}" font-size="23" font-weight="600" fill="#07080f">Play Free →</text>
+  <circle cx="930" cy="330" r="220" fill="#ffb547" opacity=".16" filter="url(#${id}-blur)"/>
+  ${character(815, 118, 230, mood)}
+  <text x="72" y="118" font-family="${MONO}" font-size="21" font-weight="500" fill="#8a8d9b" letter-spacing="1.5">${eyebrow}</text>
+  <text font-family="${SANS}" font-weight="600" fill="#ededf2" letter-spacing="-3.4">${headline}</text>
+  ${sub ? `<text x="70" y="${last + 56}" font-family="${SANS}" font-size="30" fill="#a3a6b4">${sub}</text>` : ''}
+  <rect x="72" y="${last + (sub ? 92 : 52)}" width="${ctaWidth}" height="58" rx="29" fill="#ededf2"/>
+  <text x="${72 + ctaWidth / 2}" y="${last + (sub ? 131 : 91)}" text-anchor="middle" font-family="${SANS}" font-size="23" font-weight="600" fill="#07080f">${cta}</text>
   <text x="72" y="592" font-family="${MONO}" font-size="20" font-weight="500" fill="#ededf2" opacity=".85">thetungtungtungsahur.com</text>
 </svg>`;
 }
@@ -176,5 +198,48 @@ console.log('wrote public/favicon.svg');
 await png(appIcon(180, 0.86), 'apple-touch-icon.png');
 await png(appIcon(192, 0.72), 'icon-192.png');
 await png(appIcon(512, 0.72), 'icon-512.png');
-await png(ogHub(), 'og/default.png');
+await png(
+  ogCard({
+    id: 'hub',
+    eyebrow: 'GAME HUB · FREE · NO DOWNLOAD',
+    lines: ['Tung Tung Tung', 'Sahur Games'],
+    sub: 'Free browser games, after dark.',
+    cta: 'Play Free →',
+  }),
+  'og/default.png',
+);
 await png(ogFind(), 'og/find-tung-tung-tung-sahur.png');
+await png(
+  ogCard({
+    id: 'games',
+    eyebrow: 'EVERY GAME ON THE HUB',
+    lines: ['All Tung Tung', 'Tung Sahur Games'],
+    size: 72,
+    sub: 'Free, in your browser, on any screen.',
+    cta: 'Browse Games →',
+  }),
+  'og/games.png',
+);
+await png(
+  ogCard({
+    id: 'lore',
+    eyebrow: 'MEANING · ORIGIN · LORE',
+    lines: ['Who Is Tung', 'Tung Tung Sahur?'],
+    size: 72,
+    sub: 'The drum, the meme and the three knocks.',
+    cta: 'Read the Story →',
+    mood: 'shout',
+  }),
+  'og/tung-tung-tung-sahur.png',
+);
+await png(
+  ogCard({
+    id: 'about',
+    eyebrow: 'ABOUT THIS SITE',
+    lines: ['A Tiny Game Hub', 'for a Very Loud Log'],
+    size: 66,
+    sub: 'Independent, fan-made and ad-free.',
+    cta: 'About →',
+  }),
+  'og/about.png',
+);
