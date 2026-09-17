@@ -2,7 +2,7 @@
 
 Source for [thetungtungtungsahur.com](https://thetungtungtungsahur.com): a hub of free Tung Tung Tung Sahur browser games, built with Astro 7 and Tailwind CSS v4. The first game is **Find Tung Tung Tung Sahur**, an audio hide-and-seek game in a dark village.
 
-The visual system follows `../DESIGN.md` (Geist type scale, hairline cards, pill vs 6px buttons, one mesh gradient), moved onto a night canvas.
+The visual system follows [docs/DESIGN.md](docs/DESIGN.md) (Geist type scale, hairline cards, pill vs 6px buttons, one mesh gradient), moved onto a night canvas.
 
 ## Commands
 
