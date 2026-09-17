@@ -15,6 +15,14 @@ type Wave = OscillatorType;
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 const db = (value: number) => 10 ** (value / 20);
 
+/**
+ * A touch of per-hit variation, so a run of knocks never lands bit-identical.
+ * The spreads are deliberately tiny next to the cues they sit on: ±1% of pitch
+ * is ~17 cents against the 540 the distance ramp covers, and ±5% of level is
+ * ~0.4 dB against its 26. The distance mappings themselves are untouched.
+ */
+const vary = (spread: number) => 1 + (Math.random() * 2 - 1) * spread;
+
 export class Sound {
   private ctx: AudioContext | null = null;
   private bus: GainNode | null = null;
@@ -50,7 +58,9 @@ export class Sound {
           knee: 6,
           ratio: 8,
           attack: 0.002,
-          release: 0.12,
+          // Shorter than the 75 ms drumroll gap, so the roll stops ducking itself
+          // just as you close in. Still far longer than the lowest tone's period.
+          release: 0.07,
         });
         bus.connect(limiter).connect(ctx.destination);
         this.ctx = ctx;
@@ -88,9 +98,9 @@ export class Sound {
     const { ctx, bus } = this;
     if (!ctx || !bus) return;
     const h = clamp(heat, 0, 1);
-    const f0 = 176 * 2 ** (h * 0.45) * (options.accent ? 0.9 : 1);
+    const f0 = 176 * 2 ** (h * 0.45) * (options.accent ? 0.9 : 1) * vary(0.01);
     const decay = options.roll ? 0.07 : 0.1 + 0.08 * (1 - h);
-    const level = db(-26 + 26 * h) * (options.accent ? 1 : 0.78);
+    const level = db(-26 + 26 * h) * (options.accent ? 1 : 0.78) * vary(0.05);
 
     const out = this.chain(bus, level, 350 * 26 ** h, pan);
     const golden = options.golden === true;
@@ -98,7 +108,7 @@ export class Sound {
     this.partial(out.input, 'sine', f0 * 1.6, f0, at, 0.9, decay * 1.7, 0.03, golden ? undefined : out.release);
     this.partial(out.input, 'sine', f0 * 2.4, f0 * 2.32, at, 0.3, decay * 0.6, 0.02);
     if (!options.roll) this.partial(out.input, 'triangle', f0 * 4.1, f0 * 3.9, at, 0.12, 0.025, 0.01);
-    this.click(out.input, at, 2400, 0.45, 0.012);
+    this.click(out.input, at, 2400 * vary(0.06), 0.45 * vary(0.08), 0.012);
     // Golden Sahur rings like a little bell.
     if (golden) this.partial(out.input, 'sine', f0 * 7.02, f0 * 7.02, at + 0.004, 0.12, 0.5, 0, out.release);
   }
@@ -108,8 +118,8 @@ export class Sound {
     const { ctx, bus } = this;
     if (!ctx || !bus) return;
     const h = clamp(level, 0, 1);
-    const out = this.chain(bus, db(-30 + 26 * h) * 0.75, 600 * 14 ** h, pan);
-    const f = 530;
+    const out = this.chain(bus, db(-30 + 26 * h) * 0.75 * vary(0.05), 600 * 14 ** h, pan);
+    const f = 530 * vary(0.012);
     const partials: [number, number, number][] = [
       [1, 0.5, 0.45],
       [2.76, 0.32, 0.3],

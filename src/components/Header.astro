@@ -7,7 +7,11 @@ import Logo from './Logo.astro';
   <nav aria-label="Main" class="mx-auto flex h-14 max-w-page items-center gap-2 px-4 sm:px-6">
     <a href="/" class="-ml-1 flex min-w-0 items-center gap-2.5 rounded-sm px-1 py-1">
       <Logo class="size-7 shrink-0" />
-      <span class="truncate text-sm font-semibold tracking-[-0.4px] sm:text-[15px]" translate="no">{SITE.name}</span>
+      {/* The full name needs ~166px; under 360px the bar can't spare it, so the short name stands in. */}
+      <span class="truncate text-sm font-semibold tracking-[-0.4px] sm:text-[15px]" translate="no">
+        <span class="min-[360px]:hidden">{SITE.shortName}</span>
+        <span class="hidden min-[360px]:inline">{SITE.name}</span>
+      </span>
     </a>
 
     <ul class="ml-6 hidden items-center gap-1 md:flex">

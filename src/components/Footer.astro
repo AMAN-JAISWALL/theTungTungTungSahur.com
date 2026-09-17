@@ -38,10 +38,13 @@ const year = new Date().getFullYear();
       groups.map((group) => (
         <div>
           <h2 class="eyebrow">{group.title}</h2>
-          <ul class="mt-4 space-y-3">
+          <ul class="mt-2 space-y-0.5">
             {group.links.map((link) => (
               <li>
-                <a href={link.href} class="text-sm text-body transition-colors hover:text-ink">
+                <a
+                  href={link.href}
+                  class="-mx-2 inline-block rounded-sm px-2 py-2 text-sm text-body transition-colors hover:text-ink"
+                >
                   {link.label}
                 </a>
               </li>

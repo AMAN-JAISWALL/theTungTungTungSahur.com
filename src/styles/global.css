@@ -144,6 +144,7 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
+    max-width: 100%;
     white-space: nowrap;
     font-weight: 500;
     user-select: none;
@@ -161,12 +162,23 @@
       cursor: not-allowed;
     }
   }
+  /*
+   * Pills carry long marketing labels ("Play Find Tung Tung Tung Sahur"), so
+   * they wrap rather than push a grid column past a narrow viewport. min-height
+   * keeps the 44px touch target when the label does wrap.
+   */
   .btn-pill {
-    height: 44px;
-    padding: 0 20px;
+    min-height: 44px;
+    padding: 8px 20px;
     border-radius: var(--radius-pill);
     font-size: 16px;
     line-height: 20px;
+    white-space: normal;
+    text-align: center;
+    text-wrap: balance;
+    @media (width < 380px) {
+      padding-inline: 14px;
+    }
   }
   .btn-app {
     height: 36px;

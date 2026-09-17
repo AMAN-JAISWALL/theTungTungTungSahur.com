@@ -27,11 +27,18 @@ html.find-open {
   bottom: 64px;
 }
 
+/*
+ * One card per row on phones (three across from `sm`), so "Sahur Rush · Beat
+ * the dawn" reads on one line instead of stacking into three wrapped lines.
+ */
 .mode-option {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px 10px;
   min-width: 0;
+  min-height: 44px;
   padding: 12px;
   border: 1px solid var(--color-hairline);
   border-radius: var(--radius-sm);
@@ -41,6 +48,13 @@ html.find-open {
     border-color 150ms,
     background-color 150ms,
     box-shadow 150ms;
+}
+@media (width >= 40rem) {
+  .mode-option {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 2px;
+  }
 }
 .mode-option:hover {
   background-color: var(--color-raised);
@@ -473,6 +487,13 @@ html.find-open {
 .find-stats > div {
   min-width: 0;
   padding: 10px 6px;
+  /* Labels and values ("Light Sleeper") wrap instead of clipping in a 3rd of a narrow panel. */
+  overflow-wrap: break-word;
+}
+@media (width < 380px) {
+  .find-stats dd {
+    font-size: 13px;
+  }
 }
 .find-stats > div + div {
   border-left: 1px solid var(--color-hairline);

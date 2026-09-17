@@ -56,7 +56,7 @@ const svg = (paths: string, cls = 'size-[18px]') =>
 
       <fieldset class="mt-5">
         <legend class="sr-only">Game mode</legend>
-        <div class="grid grid-cols-3 gap-2">
+        <div class="grid gap-2 sm:grid-cols-3">
           {
             modes.map((m) => (
               <label class="mode-option">
@@ -86,12 +86,12 @@ const svg = (paths: string, cls = 'size-[18px]') =>
 
       <fieldset class="mt-3 border-t border-hairline pt-3">
         <legend class="sr-only">Settings</legend>
-        <div class="grid grid-cols-2 gap-x-2 gap-y-1">
+        <div class="grid gap-x-2 gap-y-1 min-[420px]:grid-cols-2">
           {
             settings.map((s) => (
               <label class="flex min-w-0 cursor-pointer items-center justify-between gap-3 rounded-sm px-2 py-2.5 hover:bg-hairline-soft">
                 <span class="min-w-0">
-                  <span class="block truncate text-label">{s.label}</span>
+                  <span class="block text-label">{s.label}</span>
                   <span class="hidden truncate text-xs text-mute sm:block">{s.hint}</span>
                 </span>
                 <input type="checkbox" role="switch" class="switch" name={s.key} data-setting={s.key} />
@@ -263,8 +263,8 @@ const svg = (paths: string, cls = 'size-[18px]') =>
             {
               [0, 1, 2].map(() => (
                 <div data-r-stat>
-                  <dt class="eyebrow truncate" />
-                  <dd class="mt-1 truncate font-mono text-sm tabular-nums" />
+                  <dt class="eyebrow" />
+                  <dd class="mt-1 font-mono text-sm tabular-nums" />
                 </div>
               ))
             }

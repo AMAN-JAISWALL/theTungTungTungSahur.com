@@ -1,13 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-<rect width="64" height="64" rx="15" fill="#161a33"></rect>
-<path d="M50.5 9.5a8 8 0 1 0 5.2 12.4 6.5 6.5 0 1 1-5.2-12.4Z" fill="#f4ead2"></path>
-<path d="M18 18c-.7 8-.7 23 0 33a14 4 0 0 0 28 0c.7-10 .7-25 0-33Z" fill="#b97a44" stroke="#2b1a0e" stroke-width="2"></path>
-<ellipse cx="32" cy="18" rx="14" ry="4.5" fill="#e8b87f" stroke="#2b1a0e" stroke-width="2"></ellipse>
-<ellipse cx="32" cy="18" rx="7" ry="2" fill="none" stroke="#c38a51" stroke-width="1.2"></ellipse>
-<path d="M21 27.5l7 2M43 27.5l-7 2" stroke="#2b1a0e" stroke-width="2.6" stroke-linecap="round"></path>
-<circle cx="26.5" cy="34" r="4.3" fill="#fff" stroke="#2b1a0e" stroke-width="1.2"></circle>
-<circle cx="37.5" cy="34" r="4.3" fill="#fff" stroke="#2b1a0e" stroke-width="1.2"></circle>
-<circle cx="27.4" cy="34.6" r="1.7" fill="#15100c"></circle>
-<circle cx="36.6" cy="34.6" r="1.7" fill="#15100c"></circle>
-<path d="M26.5 43.5q5.5 4 11 0" fill="none" stroke="#2b1a0e" stroke-width="2.2" stroke-linecap="round"></path>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"><rect width="64" height="64" rx="15" fill="#161a33"></rect><path d="M50.5 9.5a8 8 0 1 0 5.2 12.4 6.5 6.5 0 1 1-5.2-12.4Z" fill="#f4ead2"></path><path d="M18 18c-.7 8-.7 23 0 33a14 4 0 0 0 28 0c.7-10 .7-25 0-33Z" fill="#b97a44" stroke="#2b1a0e" stroke-width="2"></path><ellipse cx="32" cy="18" rx="14" ry="4.5" fill="#e8b87f" stroke="#2b1a0e" stroke-width="2"></ellipse><ellipse cx="32" cy="18" rx="7" ry="2" fill="none" stroke="#c38a51" stroke-width="1.2"></ellipse><path d="M21 27.5l7 2M43 27.5l-7 2" stroke="#2b1a0e" stroke-width="2.6" stroke-linecap="round"></path><circle cx="26.5" cy="34" r="4.3" fill="#fff" stroke="#2b1a0e" stroke-width="1.2"></circle><circle cx="37.5" cy="34" r="4.3" fill="#fff" stroke="#2b1a0e" stroke-width="1.2"></circle><circle cx="27.4" cy="34.6" r="1.7" fill="#15100c"></circle><circle cx="36.6" cy="34.6" r="1.7" fill="#15100c"></circle><path d="M26.5 43.5q5.5 4 11 0" fill="none" stroke="#2b1a0e" stroke-width="2.2" stroke-linecap="round"></path></svg>
