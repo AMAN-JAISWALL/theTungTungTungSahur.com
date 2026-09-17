@@ -551,7 +551,7 @@ export function createGame(dialog: HTMLDialogElement, sound: Sound, onExit?: () 
     if (isBest) store.update((s) => (s.classicBest = seconds));
     announce(`Caught in ${secondsFormat.format(seconds)} seconds.`);
     if (settings().voice && audible()) later(() => sound.say('Tung tung tung sahur!'), 650);
-    later(() => showClassicResult(seconds, isBest && best !== null, golden), 1600);
+    later(() => showClassicResult(seconds, isBest, golden), 1600);
   }
 
   function missed(pot?: Spot) {
@@ -625,6 +625,10 @@ export function createGame(dialog: HTMLDialogElement, sound: Sound, onExit?: () 
     setPhase('result');
     queue.length = 0;
     if (audible()) sound.dawn();
+    // The clock never renders its own last frame, so settle the HUD on empty here.
+    setText(hudTime, 'time', fmtClock(0));
+    dawnBar.style.transform = 'scaleX(0)';
+    dawnTrack.classList.remove('is-low');
     dawnSky.style.opacity = '1';
     darkTarget = 0.45;
     const prevBest = store.load().rushBest;
@@ -750,8 +754,11 @@ export function createGame(dialog: HTMLDialogElement, sound: Sound, onExit?: () 
       scheduleKnocks(t);
       scheduleDecoys(t);
       if (mode === 'rush') tickRush(dt);
-      renderHud(t);
-      announceHeat(t);
+      // tickRush can end the run; leave the dawn endRush just painted alone.
+      if (phase === 'search') {
+        renderHud(t);
+        announceHeat(t);
+      }
     }
 
     while (queue.length && queue[0].t <= t) onKnock(queue.shift()!, t);
@@ -1060,14 +1067,17 @@ export function createGame(dialog: HTMLDialogElement, sound: Sound, onExit?: () 
   }
 
   const local = (e: PointerEvent) => ({ x: e.clientX - left, y: e.clientY - top });
-  const isControl = (el: EventTarget | null) => el instanceof Element && el.closest('button, a, input, label, [data-ui]') !== null;
+  const within = (el: EventTarget | null, selector: string) => el instanceof Element && el.closest(selector) !== null;
+  const isButton = (el: EventTarget | null) => within(el, 'button, a, input, label');
+  const isControl = (el: EventTarget | null) => isButton(el) || within(el, '[data-ui]');
 
   stage.addEventListener('pointerdown', (e) => {
-    if (isControl(e.target)) return;
+    // The pause overlay covers the stage, so anything on it but the Resume button resumes.
     if (phase === 'paused') {
-      resume();
+      if (!isButton(e.target)) resume();
       return;
     }
+    if (isControl(e.target)) return;
     if (phase !== 'search') return;
     const rect = stage.getBoundingClientRect();
     left = rect.left;
