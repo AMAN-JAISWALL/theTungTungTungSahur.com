@@ -1,0 +1,24 @@
+---
+import Breadcrumbs from './Breadcrumbs.astro';
+import type { Crumb } from '../lib/schema';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead?: string;
+  crumbs?: Crumb[];
+}
+
+const { eyebrow, title, lead, crumbs } = Astro.props;
+---
+
+<header class="relative isolate overflow-hidden border-b border-hairline">
+  <div class="mesh-night absolute -top-24 right-0 -z-10 h-72 w-3/4 opacity-80" aria-hidden="true"></div>
+  <div class="mx-auto max-w-page px-4 py-14 sm:px-6 md:py-20">
+    {crumbs && <Breadcrumbs items={crumbs} class="mb-8" />}
+    <p class="eyebrow">{eyebrow}</p>
+    <h1 class="mt-3 max-w-3xl text-display-sm sm:text-display">{title}</h1>
+    {lead && <p class="mt-5 max-w-2xl text-lg text-body">{lead}</p>}
+    <slot />
+  </div>
+</header>

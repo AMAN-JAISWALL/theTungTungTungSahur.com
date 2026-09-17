@@ -1,0 +1,244 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Faq, { type FaqItem } from '../../components/Faq.astro';
+import GameCard from '../../components/GameCard.astro';
+import FindGame from '../../components/find/FindGame.astro';
+import { breadcrumbSchema, organization, type Crumb } from '../../lib/schema';
+import { DAILY_MISS_PENALTY, RUSH } from '../../scripts/find/modes';
+import { FIND_PATH, LIVE_GAMES, SITE, SOON_GAMES } from '../../site';
+
+const title = 'Find Tung Tung Tung Sahur';
+const description =
+  'Play Find Tung Tung Tung Sahur free. He’s hiding in the dark: follow the tung tung tung, catch him before dawn and keep your daily streak. Works on phones.';
+
+const crumbs: Crumb[] = [
+  { label: 'Home', href: '/' },
+  { label: 'Games', href: '/games' },
+  { label: title, href: FIND_PATH },
+];
+
+const steps = [
+  {
+    title: 'Turn Your Sound On',
+    body: 'Press Test Sound first. Headphones help: the drumming pans left and right to point the way.',
+  },
+  {
+    title: 'Follow the Tung',
+    body: 'Move your lantern with a mouse, a finger or the arrow keys. The closer you get, the faster, louder and brighter he knocks.',
+  },
+  {
+    title: 'Catch Him',
+    body: 'When the knocking turns into a drumroll and two eyes glint in the dark, click, tap or lift your finger.',
+  },
+];
+
+const controls = [
+  ['Mouse', 'Move to search. Click to catch.'],
+  ['Touch', 'Drag to search. Lift your finger on him, or tap a spot to guess.'],
+  ['Keyboard', 'Arrow keys move (Shift for big steps). Enter or Space catches. M sound, V visual cues, P pause, Esc exit.'],
+];
+
+const modes = [
+  {
+    id: 'classic',
+    name: 'Classic',
+    tag: 'Relaxed · No timer',
+    body: 'One hide at a time, as long as you need. Misses don’t cost anything, and every find counts toward your rank.',
+  },
+  {
+    id: 'rush',
+    name: 'Sahur Rush',
+    tag: `Arcade · ${RUSH.start}s to dawn`,
+    body: `Every catch scores points and buys time, and catches in a row build a combo. A miss costs ${RUSH.missPenalty} seconds. From level 4 he wanders; from level 6, pot-bangers join in.`,
+  },
+  {
+    id: 'daily',
+    name: 'Daily Sahur',
+    tag: 'Once a day · 5 hides',
+    body: `The same five hiding spots for everyone today, ending with a Golden Sahur. Your time plus ${DAILY_MISS_PENALTY}s per miss is your score, with a shareable emoji grid.`,
+  },
+];
+
+const extras = [
+  {
+    name: 'Golden Sahur',
+    body: 'A rare golden version. His knocks ring like a little bell, and he’s worth double.',
+  },
+  {
+    name: 'Pot-Bangers',
+    body: 'Metal “klang” noises that aren’t him. Clicking a pot costs you time, so trust the wooden tung.',
+  },
+  {
+    name: 'Ranks',
+    body: 'Every find counts, from Sleepyhead to Sahur Legend. Your progress stays in this browser.',
+  },
+];
+
+const faqs: FaqItem[] = [
+  {
+    q: 'How Do You Play Find Tung Tung Tung Sahur?',
+    a: 'Move your mouse or drag your finger around the screen and listen. The tung tung tung gets faster, louder and brighter as you get closer. When it becomes a drumroll and his eyes glint, click, tap or lift your finger to catch him.',
+  },
+  {
+    q: 'Can I Play Without Sound?',
+    a: 'Yes. Turn on Visual Cues: your lantern changes from cold blue to red-hot and a heat meter appears. The lantern also pulses with every knock, so you can follow the rhythm with your eyes. If sound is off or blocked, Visual Cues switch on by themselves.',
+  },
+  {
+    q: 'I Can’t Hear Anything. What Should I Do?',
+    a: 'Press Test Sound in the menu. If it stays silent, raise your volume, check your phone’s silent switch and make sure Sound is on in the settings. Some browsers only allow sound after a tap, so tap the game once more.',
+  },
+  {
+    q: 'Do I Need Headphones?',
+    a: 'No, but they help. The drumming pans between your left and right ear, so you can hear which way to go instead of only how close you are.',
+  },
+  {
+    q: 'Does It Work on Phones and Tablets?',
+    a: 'Yes. Drag your finger to search, then lift it when you’re on him. Android phones also vibrate harder as you get close.',
+  },
+  {
+    q: 'Is It Free? Do I Need an Account?',
+    a: 'It’s free, with no account and no download. Your finds, best scores and streak are saved in your browser, so clearing site data resets them.',
+  },
+  {
+    q: 'Is This the Official Tung Tung Tung Sahur Game?',
+    a: 'No. It’s an independent, fan-made game inspired by the meme. The artwork is original, and every sound is generated live in your browser.',
+  },
+];
+
+const videoGame = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoGame',
+  name: title,
+  description,
+  url: `${SITE.url}${FIND_PATH}`,
+  image: `${SITE.url}/og/find-tung-tung-tung-sahur.png`,
+  genre: ['Casual', 'Hide and seek', 'Audio game'],
+  gamePlatform: ['Web browser', 'Android', 'iOS', 'Windows', 'macOS'],
+  applicationCategory: 'GameApplication',
+  operatingSystem: 'Any',
+  playMode: 'SinglePlayer',
+  inLanguage: 'en',
+  isAccessibleForFree: true,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  publisher: organization,
+};
+---
+
+<Layout
+  title={`${title} – Free Online Sound Game`}
+  description={description}
+  path={FIND_PATH}
+  image="/og/find-tung-tung-tung-sahur.png"
+  imageAlt="Two glowing eyes in a dark village and a lantern: Find Tung Tung Tung Sahur."
+  schema={[videoGame, breadcrumbSchema(crumbs)]}
+>
+  <div class="mx-auto max-w-page px-3 pt-5 sm:px-6 sm:pt-8">
+    <Breadcrumbs items={crumbs} class="px-1 sm:px-0" />
+    <header class="mt-4 flex flex-col gap-4 px-1 sm:px-0 lg:flex-row lg:items-end lg:justify-between">
+      <div>
+        <h1 class="text-display-sm sm:text-display">Find <span translate="no">Tung Tung Tung Sahur</span></h1>
+        <p class="mt-3 max-w-2xl text-body sm:text-lg">
+          He’s hiding somewhere in the dark, drumming. Follow the tung tung tung with your ears, then catch him before
+          the sun comes up.
+        </p>
+      </div>
+      <ul class="flex flex-wrap gap-2 lg:justify-end" aria-label="Game details">
+        {
+          ['Free', 'No download', 'Mouse, touch & keys', 'Playable muted'].map((item) => (
+            <li class="rounded-full border border-hairline px-3 py-1 text-xs text-body">{item}</li>
+          ))
+        }
+      </ul>
+    </header>
+    <div class="mt-6">
+      <FindGame />
+    </div>
+  </div>
+
+  <section id="how-to-play" aria-labelledby="how-title" class="mx-auto max-w-page px-4 pt-24 sm:px-6 md:pt-32">
+    <p class="eyebrow">How to Play</p>
+    <h2 id="how-title" class="mt-3 text-heading-lg">Listen. Follow. Catch.</h2>
+    <ol class="mt-10 grid gap-4 md:grid-cols-3">
+      {
+        steps.map((step, i) => (
+          <li class="card p-6">
+            <span class="grid size-8 place-items-center rounded-full border border-hairline font-mono text-xs text-body">
+              {i + 1}
+            </span>
+            <h3 class="mt-5 text-heading-md">{step.title}</h3>
+            <p class="mt-2 text-sm text-body">{step.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <div class="card mt-4 overflow-hidden">
+      <h3 class="sr-only">Controls</h3>
+      <dl class="divide-y divide-hairline text-sm">
+        {
+          controls.map(([input, how]) => (
+            <div class="flex flex-col gap-1 px-6 py-4 sm:flex-row sm:gap-8">
+              <dt class="w-24 shrink-0 font-medium">{input}</dt>
+              <dd class="text-body">{how}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <section id="modes" aria-labelledby="modes-title" class="mx-auto max-w-page px-4 pt-24 sm:px-6 md:pt-32">
+    <p class="eyebrow">Game Modes</p>
+    <h2 id="modes-title" class="mt-3 text-heading-lg">Three Ways to Hunt</h2>
+    <div class="mt-10 grid gap-4 md:grid-cols-3">
+      {
+        modes.map((mode) => (
+          <article class="card flex flex-col p-6">
+            <p class="font-mono text-xs text-lantern">{mode.tag}</p>
+            <h3 class="mt-3 text-heading-md">{mode.name}</h3>
+            <p class="mt-2 flex-1 text-sm text-body">{mode.body}</p>
+            <button type="button" data-find-start={mode.id} class="btn btn-app btn-secondary mt-6 self-start">
+              Play {mode.name}
+            </button>
+          </article>
+        ))
+      }
+    </div>
+    <ul class="mt-4 grid gap-px overflow-hidden rounded-md border border-hairline bg-hairline md:grid-cols-3">
+      {
+        extras.map((extra) => (
+          <li class="bg-canvas p-6">
+            <h3 class="text-label">{extra.name}</h3>
+            <p class="mt-1 text-sm text-body">{extra.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section id="faq" aria-labelledby="faq-title" class="mx-auto max-w-page px-4 pt-24 sm:px-6 md:pt-32">
+    <div class="grid gap-8 md:grid-cols-[1fr_2fr] md:gap-16">
+      <div>
+        <p class="eyebrow">FAQ</p>
+        <h2 id="faq-title" class="mt-3 text-heading-lg">Questions, Answered</h2>
+        <p class="mt-3 text-body">
+          Still stuck? The <a class="link" href="/about">about page</a> explains who made this and why.
+        </p>
+      </div>
+      <Faq items={faqs} />
+    </div>
+  </section>
+
+  <section aria-labelledby="more-title" class="mx-auto max-w-page px-4 py-24 sm:px-6 md:py-32">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p class="eyebrow">More Games</p>
+        <h2 id="more-title" class="mt-3 text-heading-lg">Next on the Hub</h2>
+      </div>
+      <a href="/games" class="link shrink-0 text-sm font-medium">All Games →</a>
+    </div>
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {SOON_GAMES.map((game, i) => <GameCard game={game} index={LIVE_GAMES.length + i + 1} />)}
+    </div>
+  </section>
+</Layout>

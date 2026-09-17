@@ -1,0 +1,52 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import GameCard from '../../components/GameCard.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { breadcrumbSchema, type Crumb } from '../../lib/schema';
+import { GAMES, LIVE_GAMES, SITE, SOON_GAMES } from '../../site';
+
+const crumbs: Crumb[] = [
+  { label: 'Home', href: '/' },
+  { label: 'Games', href: '/games' },
+];
+
+const collection = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'All Tung Tung Tung Sahur games',
+  url: `${SITE.url}/games`,
+  hasPart: LIVE_GAMES.map((game) => ({
+    '@type': 'VideoGame',
+    name: game.name,
+    url: new URL(game.href!, SITE.url).href,
+  })),
+};
+---
+
+<Layout
+  title="All Tung Tung Tung Sahur Games | The Tung Tung Tung Sahur"
+  description="Every Tung Tung Tung Sahur game on the hub: play Find Tung Tung Tung Sahur free now, with Runner, Rhythm and more on the way."
+  path="/games"
+  schema={[collection, breadcrumbSchema(crumbs)]}
+>
+  <PageHeader
+    eyebrow={`${GAMES.length} Games · ${LIVE_GAMES.length} Live`}
+    title="All Tung Tung Tung Sahur Games"
+    lead="Free games you can play in a few minutes, on any device. Pick one and turn your sound on."
+    crumbs={crumbs}
+  />
+
+  <section aria-labelledby="live-title" class="mx-auto max-w-page px-4 pt-14 sm:px-6">
+    <h2 id="live-title" class="eyebrow">Play Now</h2>
+    <div class="mt-5 grid gap-4">
+      {LIVE_GAMES.map((game, i) => <GameCard game={game} index={i + 1} />)}
+    </div>
+  </section>
+
+  <section aria-labelledby="soon-title" class="mx-auto max-w-page px-4 pt-16 pb-24 sm:px-6">
+    <h2 id="soon-title" class="eyebrow">Coming Soon</h2>
+    <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {SOON_GAMES.map((game, i) => <GameCard game={game} index={LIVE_GAMES.length + i + 1} />)}
+    </div>
+  </section>
+</Layout>

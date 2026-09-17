@@ -1,0 +1,27 @@
+---
+/**
+ * Original illustration of Tung Tung Tung Sahur. Both mouths are drawn;
+ * `data-mood` on the <svg> picks one (see .tts rules in global.css).
+ */
+import { SAHUR_VIEWBOX, sahurMarkup, type Mood } from '../lib/art';
+
+interface Props {
+  class?: string;
+  /** Accessible name. Omit for decorative use. */
+  title?: string;
+  mood?: Mood;
+  golden?: boolean;
+}
+
+const { class: className, title, mood = 'idle', golden = false } = Astro.props;
+---
+
+<svg
+  class:list={['tts', { 'tts-golden': golden }, className]}
+  data-mood={mood}
+  viewBox={`0 0 ${SAHUR_VIEWBOX.w} ${SAHUR_VIEWBOX.h}`}
+  role={title ? 'img' : undefined}
+  aria-label={title}
+  aria-hidden={title ? undefined : 'true'}
+  set:html={sahurMarkup('both')}
+/>

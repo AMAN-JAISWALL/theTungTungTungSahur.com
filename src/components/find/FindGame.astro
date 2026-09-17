@@ -1,0 +1,290 @@
+---
+/**
+ * Find Tung Tung Tung Sahur: the menu poster that sits on the page, and the
+ * full-screen <dialog> the game runs in. Behavior: scripts/find/*.
+ */
+import NightScene from '../NightScene.astro';
+import Sahur from '../Sahur.astro';
+import { MODE_IDS, MODES } from '../../scripts/find/modes';
+import '../../styles/find.css';
+
+const modes = MODE_IDS.map((id) => MODES[id]);
+
+const settings = [
+  { key: 'sound', label: 'Sound', hint: 'The whole point' },
+  { key: 'visual', label: 'Visual Cues', hint: 'Heat meter and lantern color' },
+  { key: 'voice', label: 'Voice', hint: 'He shouts when caught' },
+  { key: 'haptics', label: 'Vibration', hint: 'Pulses on Android' },
+];
+
+const stats = [
+  { key: 'finds', label: 'Finds', empty: '0' },
+  { key: 'golden', label: 'Golden', empty: '0' },
+  { key: 'rush', label: 'Rush Best', empty: '—' },
+  { key: 'streak', label: 'Daily Streak', empty: '0' },
+];
+
+const icon = {
+  play: '<path d="M7 4.5v15l13-7.5z" fill="currentColor" stroke="none"/>',
+  speaker: '<path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/>',
+  muted: '<path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/>',
+  eye: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  eyeOff:
+    '<path d="M9.9 4.2A10 10 0 0 1 12 4c6.4 0 10 8 10 8a17 17 0 0 1-2.2 3.2M6.6 6.6C3.9 8.3 2 12 2 12s3.6 8 10 8a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2M2 2l20 20"/>',
+  close: '<path d="M18 6 6 18M6 6l12 12"/>',
+};
+const svg = (paths: string, cls = 'size-[18px]') =>
+  `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
+---
+
+<section
+  id="play"
+  data-find
+  aria-labelledby="play-title"
+  class="find-frame relative isolate overflow-hidden rounded-lg border border-hairline"
+>
+  <NightScene id="cover" stars={72} class="-z-10" />
+  <div class="find-frame-shade -z-10" aria-hidden="true"></div>
+  <span class="glow-eyes find-frame-eyes -z-10" aria-hidden="true"><i></i><i></i></span>
+  <span class="cover-tung find-frame-tung -z-10" style="--d: .6s" aria-hidden="true">tung</span>
+  <span class="cover-tung is-hot find-frame-tung -z-10" style="--d: 1.4s; --x: 12%" aria-hidden="true">TUNG</span>
+
+  <div class="grid gap-3 p-3 pb-24 sm:gap-4 sm:p-6 sm:pb-28 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-6 lg:p-8 lg:pb-32">
+    <div class="rounded-md border border-hairline bg-canvas/85 p-4 backdrop-blur-md sm:p-6">
+      <h2 id="play-title" class="text-heading-md">Choose Your Night</h2>
+      <p class="mt-1 text-sm text-body">Turn your sound on. Headphones help: the drumming moves between your ears.</p>
+
+      <fieldset class="mt-5">
+        <legend class="sr-only">Game mode</legend>
+        <div class="grid grid-cols-3 gap-2">
+          {
+            modes.map((m) => (
+              <label class="mode-option">
+                <input type="radio" name="mode" value={m.id} checked={m.id === 'classic'} class="sr-only" />
+                <span class="text-label">{m.name}</span>
+                <span class="font-mono text-xs text-lantern" data-mode-meta={m.id}>
+                  {m.meta}
+                </span>
+              </label>
+            ))
+          }
+        </div>
+      </fieldset>
+      <p data-mode-blurb class="mt-3 min-h-10 text-sm text-body">{MODES.classic.blurb}</p>
+
+      <div class="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+        <button type="button" data-play class="btn btn-pill btn-primary sm:min-w-56">
+          <Fragment set:html={svg(icon.play, 'size-4')} />
+          <span>Play <span data-play-label>{MODES.classic.name}</span></span>
+        </button>
+        <button type="button" data-test-sound class="btn btn-pill btn-secondary">
+          <Fragment set:html={svg(icon.speaker, 'size-4')} />
+          Test Sound
+        </button>
+      </div>
+      <p data-test-status class="mt-3 min-h-5 text-sm text-body" aria-live="polite"></p>
+
+      <fieldset class="mt-3 border-t border-hairline pt-3">
+        <legend class="sr-only">Settings</legend>
+        <div class="grid grid-cols-2 gap-x-2 gap-y-1">
+          {
+            settings.map((s) => (
+              <label class="flex min-w-0 cursor-pointer items-center justify-between gap-3 rounded-sm px-2 py-2.5 hover:bg-hairline-soft">
+                <span class="min-w-0">
+                  <span class="block truncate text-label">{s.label}</span>
+                  <span class="hidden truncate text-xs text-mute sm:block">{s.hint}</span>
+                </span>
+                <input type="checkbox" role="switch" class="switch" name={s.key} data-setting={s.key} />
+              </label>
+            ))
+          }
+        </div>
+      </fieldset>
+    </div>
+
+    <aside aria-labelledby="stats-title" class="rounded-md border border-hairline bg-canvas/85 p-4 backdrop-blur-md sm:p-6">
+      <h2 id="stats-title" class="eyebrow">Your Night Watch</h2>
+      <p class="mt-3 text-heading-md" data-stat="rank">Sleepyhead</p>
+      <div class="mt-3 h-1.5 overflow-hidden rounded-full bg-hairline">
+        <div data-stat-bar class="h-full origin-left scale-x-0 rounded-full bg-lantern transition-transform duration-500"></div>
+      </div>
+      <p class="mt-2 text-xs text-mute" data-stat="rank-next">5 more finds to Light Sleeper</p>
+      <dl class="mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-sm border border-hairline bg-hairline">
+        {
+          stats.map((s) => (
+            <div class="bg-elevated p-3">
+              <dt class="eyebrow">{s.label}</dt>
+              <dd class="mt-1 text-heading-md tabular-nums" data-stat={s.key}>
+                {s.empty}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="mt-4 text-xs text-mute">Progress is saved in this browser only.</p>
+    </aside>
+  </div>
+</section>
+
+<dialog data-find-dialog class="find-dialog" aria-labelledby="find-dialog-title">
+  <h2 id="find-dialog-title" class="sr-only">Find Tung Tung Tung Sahur</h2>
+  <div
+    data-stage
+    data-phase="idle"
+    class="find-stage"
+    tabindex="0"
+    role="application"
+    aria-roledescription="game"
+    aria-label="Game area"
+    aria-describedby="find-help"
+  >
+    <NightScene id="stage" stars={96} class="twinkle-on" />
+    <div data-eyes class="find-anchor" aria-hidden="true">
+      <span class="glow-eyes"><i></i><i></i></span>
+    </div>
+    <canvas data-dark class="find-dark" aria-hidden="true"></canvas>
+    <div data-dawn class="find-dawn" aria-hidden="true"></div>
+
+    <div data-pot class="find-anchor" hidden aria-hidden="true">
+      <div class="find-pot">
+        <svg viewBox="0 0 64 50">
+          <ellipse cx="32" cy="15" rx="23" ry="5" fill="#a3acbd" stroke="#1d2230" stroke-width="2.5"></ellipse>
+          <rect x="27" y="5" width="10" height="7" rx="2.5" fill="#5d6679" stroke="#1d2230" stroke-width="2"></rect>
+          <path d="M10 19h44v16a11 11 0 0 1-11 11H21a11 11 0 0 1-11-11z" fill="#7c8699" stroke="#1d2230" stroke-width="2.5"></path>
+          <path d="M10 23H4m50 0h6" stroke="#1d2230" stroke-width="4" stroke-linecap="round"></path>
+          <path d="M17 25v11" stroke="#fff" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"></path>
+        </svg>
+        <span>KLANG!</span>
+      </div>
+    </div>
+
+    <div data-reveal class="find-anchor" hidden aria-hidden="true">
+      <div class="find-reveal-art"><Sahur mood="shout" /></div>
+      <p class="find-burst"><span>TUNG</span><span>TUNG</span><span>TUNG</span><span>SAHUR!</span></p>
+    </div>
+
+    <div data-lantern class="find-anchor find-lantern" aria-hidden="true">
+      <svg viewBox="0 0 32 44">
+        <path d="M11 8a5 5 0 0 1 10 0" fill="none" stroke="#caa56b" stroke-width="2"></path>
+        <rect x="9" y="7.5" width="14" height="4.5" rx="1.5" fill="#8a6a3a"></rect>
+        <path d="M9 12h14l2 5v14l-2 5H9l-2-5V17z" fill="rgb(255 190 90 / .28)" stroke="#caa56b" stroke-width="1.5"></path>
+        <path d="M16 17.5c3 4 3.5 7.2 0 11.5-3.5-4.3-3-7.5 0-11.5z" fill="#ffcf73"></path>
+        <path d="M16 22c1.3 2 1.5 3.5 0 5.2-1.5-1.7-1.3-3.2 0-5.2z" fill="#fff4d6"></path>
+        <rect x="9" y="36" width="14" height="4.5" rx="1.5" fill="#8a6a3a"></rect>
+      </svg>
+    </div>
+
+    <div data-flash class="find-flash" aria-hidden="true"></div>
+    <div data-fx class="find-fx" aria-hidden="true"></div>
+
+    <div data-ui class="find-hud">
+      <div class="find-hud-row">
+        <div class="find-chip find-glass">
+          <span data-hud-mode class="font-medium">Classic</span>
+          <span data-hud-round class="font-mono text-xs text-mute" hidden></span>
+          <span class="find-sep" aria-hidden="true"></span>
+          <span data-hud-time class="font-mono tabular-nums">0.0s</span>
+        </div>
+        <div data-hud-score-wrap class="find-chip find-glass" hidden>
+          <span class="eyebrow">Score</span>
+          <span data-hud-score class="font-mono font-medium tabular-nums">0</span>
+          <span data-hud-combo class="font-mono text-xs text-lantern"></span>
+        </div>
+        <div class="ml-auto flex gap-2">
+          <button
+            type="button"
+            data-toggle-visual
+            class="btn btn-icon find-icon-btn find-glass"
+            aria-pressed="false"
+            aria-label="Visual cues"
+            title="Visual cues (V)"
+          >
+            <Fragment set:html={svg(icon.eye, 'icon-on size-[18px]')} />
+            <Fragment set:html={svg(icon.eyeOff, 'icon-off size-[18px]')} />
+          </button>
+          <button
+            type="button"
+            data-toggle-sound
+            class="btn btn-icon find-icon-btn find-glass"
+            aria-pressed="true"
+            aria-label="Sound"
+            title="Sound (M)"
+          >
+            <Fragment set:html={svg(icon.speaker, 'icon-on size-[18px]')} />
+            <Fragment set:html={svg(icon.muted, 'icon-off size-[18px]')} />
+          </button>
+          <button type="button" data-exit class="btn btn-icon find-icon-btn find-glass" aria-label="Exit game" title="Exit (Esc)">
+            <Fragment set:html={svg(icon.close)} />
+          </button>
+        </div>
+      </div>
+      <div data-dawn-track class="find-dawn-track" hidden>
+        <div data-dawn-bar class="find-dawn-bar"></div>
+      </div>
+      <div data-heat class="find-heat find-glass" hidden>
+        <span data-heat-label class="w-24 shrink-0 text-xs font-medium">Cold</span>
+        <div class="find-heat-track"><div data-heat-bar class="find-heat-bar"></div></div>
+      </div>
+      <button type="button" data-sound-blocked class="find-blocked" hidden>Sound is blocked. Tap here to turn it on.</button>
+    </div>
+
+    <div data-splash class="find-splash find-glass" hidden aria-hidden="true">
+      <p data-splash-title class="text-heading-md"></p>
+      <p data-splash-sub class="mt-1 text-sm text-body"></p>
+    </div>
+
+    <div data-coach class="find-coach find-glass" hidden>
+      <p data-coach-text></p>
+    </div>
+    <p id="find-help" class="sr-only">
+      Arrow keys move your lantern. Hold Shift for bigger steps. Press Enter or Space to catch him. M turns sound on or off,
+      V turns visual cues on or off, P pauses, and Escape exits.
+    </p>
+
+    <div data-paused data-ui class="find-overlay" hidden>
+      <div class="find-panel">
+        <p class="eyebrow">Paused</p>
+        <p class="mt-2 text-heading-lg">Still Sahur Time</p>
+        <p class="mt-2 text-sm text-body">The clock stops while you’re away.</p>
+        <button type="button" data-resume class="btn btn-pill btn-primary mt-6 w-full">Resume</button>
+      </div>
+    </div>
+
+    <div data-result data-ui class="find-overlay" hidden>
+      <div class="find-panel find-result" role="group" aria-labelledby="find-result-title">
+        <div>
+          <p data-r-eyebrow class="eyebrow">Found Him</p>
+          <p id="find-result-title" data-r-title class="find-result-title mt-2 text-display tabular-nums">0.0s</p>
+          <p data-r-sub class="mt-2 text-sm text-body"></p>
+          <p data-r-grid class="mt-3 text-2xl tracking-[4px]" hidden></p>
+        </div>
+        <div class="find-result-body">
+          <dl class="find-stats mt-6">
+            {
+              [0, 1, 2].map(() => (
+                <div data-r-stat>
+                  <dt class="eyebrow truncate" />
+                  <dd class="mt-1 truncate font-mono text-sm tabular-nums" />
+                </div>
+              ))
+            }
+          </dl>
+          <p data-r-note class="mt-4 rounded-sm bg-lantern-soft px-3 py-2 text-sm text-lantern" hidden></p>
+          <div class="mt-6 grid gap-2">
+            <button type="button" data-r-primary class="btn btn-pill btn-primary">Hide Again</button>
+            <div class="grid grid-cols-2 gap-2">
+              <button type="button" data-r-share class="btn btn-pill btn-secondary">Share</button>
+              <button type="button" data-r-menu class="btn btn-pill btn-secondary">Menu</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p data-live class="sr-only" aria-live="polite"></p>
+  </div>
+</dialog>
+
+<script>
+  import '../../scripts/find/main';
+</script>

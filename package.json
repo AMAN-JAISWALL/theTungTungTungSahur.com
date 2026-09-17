@@ -1,7 +1,8 @@
 {
-  "name": "majestic-main",
+  "name": "thetungtungtungsahur",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "private": true,
   "engines": {
     "node": ">=22.12.0"
   },
@@ -9,12 +10,22 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "check": "astro check",
+    "images": "node --experimental-strip-types scripts/generate-images.ts",
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^7.3.3"
+    "@astrojs/sitemap": "^3.7.4",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.3",
+    "sharp": "^0.35.4",
+    "tailwindcss": "^4.3.3"
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3"
   }
 }

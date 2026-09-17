@@ -1,0 +1,64 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { breadcrumbSchema, type Crumb } from '../lib/schema';
+import { SITE } from '../site';
+
+const updated = new Date(Date.UTC(2026, 8, 17));
+const updatedLabel = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' }).format(updated);
+
+const crumbs: Crumb[] = [
+  { label: 'Home', href: '/' },
+  { label: 'Privacy', href: '/privacy' },
+];
+
+const sections = [
+  {
+    title: 'What’s Stored',
+    body: 'Your game progress (finds, best scores, daily results, streaks and settings) is saved in your browser’s local storage. It never leaves your device and isn’t sent to any server.',
+  },
+  {
+    title: 'Accounts and Tracking',
+    body: 'There are no accounts, and the site doesn’t collect your name, email or other personal information. It doesn’t use analytics, advertising or tracking cookies.',
+  },
+  {
+    title: 'Sound and Vibration',
+    body: 'Game sounds are generated in your browser. Nothing is recorded, and the site never asks for microphone access. Vibration only happens on devices that support it and can be turned off in the game settings.',
+  },
+  {
+    title: 'Hosting',
+    body: 'Like any website, the hosting provider may keep standard server logs, such as IP addresses and browser types, for security and reliability.',
+  },
+  {
+    title: 'Deleting Your Data',
+    body: 'Clear this site’s data in your browser settings to delete all saved progress.',
+  },
+  {
+    title: 'Changes',
+    body: 'If analytics or advertising are ever added, this page will be updated first.',
+  },
+];
+---
+
+<Layout
+  title="Privacy Policy | The Tung Tung Tung Sahur"
+  description={`How ${SITE.name} handles your data: progress stays in your browser, with no accounts and no tracking.`}
+  path="/privacy"
+  schema={[breadcrumbSchema(crumbs)]}
+>
+  <PageHeader eyebrow="Legal" title="Privacy Policy" crumbs={crumbs}>
+    <p class="mt-4 font-mono text-xs text-mute">
+      Last updated <time datetime={updated.toISOString().slice(0, 10)}>{updatedLabel}</time>
+    </p>
+  </PageHeader>
+  <div class="mx-auto max-w-3xl space-y-10 px-4 py-16 sm:px-6">
+    {
+      sections.map((section) => (
+        <section>
+          <h2 class="text-heading-md">{section.title}</h2>
+          <p class="mt-3 text-body">{section.body}</p>
+        </section>
+      ))
+    }
+  </div>
+</Layout>

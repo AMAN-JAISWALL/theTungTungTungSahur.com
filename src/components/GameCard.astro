@@ -1,0 +1,79 @@
+---
+import type { Game } from '../site';
+import GameIcon from './GameIcon.astro';
+import NightScene from './NightScene.astro';
+import Sahur from './Sahur.astro';
+
+interface Props {
+  game: Game;
+  /** Heading level for the card title. */
+  as?: 'h2' | 'h3';
+  index?: number;
+}
+
+const { game, as: Heading = 'h3', index = 1 } = Astro.props;
+const number = String(index).padStart(2, '0');
+---
+
+{
+  game.status === 'live' ? (
+    <article class="card group relative grid overflow-hidden transition-shadow hover:shadow-float has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-link md:grid-cols-[1.15fr_1fr]">
+      <div class="relative isolate aspect-[16/10] overflow-hidden md:aspect-auto md:min-h-[340px]">
+        <NightScene id={`card-${game.slug}`} stars={44} />
+        <div class="cover-dark" aria-hidden="true" />
+        <span class="glow-eyes left-[68%] top-[46%] [--eye-size:9px]" aria-hidden="true">
+          <i />
+          <i />
+        </span>
+        <span class="cover-tung left-[22%] top-[34%]" aria-hidden="true">
+          tung
+        </span>
+        <span class="cover-tung left-[40%] top-[62%]" style="--d: .5s" aria-hidden="true">
+          tung
+        </span>
+        <span class="cover-tung is-hot left-[58%] top-[24%]" style="--d: 1s" aria-hidden="true">
+          TUNG
+        </span>
+        <Sahur class="cover-peek" mood="shout" />
+      </div>
+      <div class="flex flex-col p-6 sm:p-8 md:p-10">
+        <p class="eyebrow">
+          Game {number} · <span class="text-lantern">Play Now</span>
+        </p>
+        <Heading class="mt-3 text-heading-lg">
+          <a href={game.href} class="after:absolute after:inset-0 focus-visible:outline-none">
+            {game.name}
+          </a>
+        </Heading>
+        <p class="mt-3 text-body">{game.tagline}</p>
+        <ul class="mt-5 flex flex-wrap gap-2" aria-label="Tags">
+          {game.tags.map((tag) => (
+            <li class="rounded-full border border-hairline px-2.5 py-1 text-xs text-body">{tag}</li>
+          ))}
+        </ul>
+        <div class="mt-auto pt-8">
+          <span class="btn btn-pill btn-primary group-hover:bg-white" aria-hidden="true">
+            <svg class="size-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 4.5v15l13-7.5z" />
+            </svg>
+            Play Now
+          </span>
+        </div>
+      </div>
+    </article>
+  ) : (
+    <article class="card flex flex-col p-6">
+      <div class="flex items-center justify-between gap-3">
+        <span class="grid size-11 place-items-center rounded-md border border-hairline bg-canvas text-body">
+          <GameIcon name={game.icon} class="size-5" />
+        </span>
+        <span class="rounded-full border border-hairline px-2.5 py-1 font-mono text-[11px] leading-4 text-mute uppercase">
+          Coming Soon
+        </span>
+      </div>
+      <Heading class="mt-6 text-heading-md">{game.name}</Heading>
+      <p class="mt-2 text-sm text-body">{game.tagline}</p>
+      <p class="mt-auto pt-5 font-mono text-xs text-mute">Game {number}</p>
+    </article>
+  )
+}

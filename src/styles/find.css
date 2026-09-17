@@ -1,0 +1,531 @@
+/* Find Tung Tung Tung Sahur: menu poster and game stage. Plain CSS on the global tokens. */
+
+html.find-open {
+  overflow: hidden;
+}
+
+/* ---------- Poster / menu ---------- */
+
+.find-frame {
+  min-height: 540px;
+}
+.find-frame-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 71% 100%, rgb(255 181 71 / 0.12), transparent 22%),
+    linear-gradient(90deg, rgb(3 4 10 / 0.6), rgb(3 4 10 / 0.2) 62%, rgb(3 4 10 / 0.45));
+}
+/* Eyes lurking between the houses in the strip under the menu. */
+.find-frame-eyes {
+  left: 71%;
+  bottom: 40px;
+  --eye-size: 9px;
+}
+.find-frame-tung {
+  left: calc(58% + var(--x, 0%));
+  bottom: 64px;
+}
+
+.mode-option {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-elevated);
+  cursor: pointer;
+  transition:
+    border-color 150ms,
+    background-color 150ms,
+    box-shadow 150ms;
+}
+.mode-option:hover {
+  background-color: var(--color-raised);
+}
+.mode-option:has(:checked) {
+  border-color: var(--color-ink);
+  background-color: var(--color-raised);
+  box-shadow: inset 0 0 0 1px var(--color-ink);
+}
+.mode-option:has(:focus-visible) {
+  outline: 2px solid var(--color-link);
+  outline-offset: 2px;
+}
+
+/* ---------- Dialog and stage ---------- */
+
+.find-dialog {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  overscroll-behavior: contain;
+}
+.find-dialog::backdrop {
+  background-color: var(--color-canvas);
+}
+
+.find-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: none;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.find-stage:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--color-link);
+}
+.find-stage[data-phase="search"] {
+  cursor: none;
+}
+
+.find-anchor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+.find-dark {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.find-dawn {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgb(255 110 60 / 0.7),
+    rgb(249 203 40 / 0.32) 26%,
+    rgb(121 40 202 / 0.14) 52%,
+    transparent 74%
+  );
+  transition: opacity 500ms linear;
+}
+
+/* Lantern cursor; on touch screens your finger is the lantern. */
+.find-lantern {
+  transition: opacity 200ms;
+}
+.find-lantern svg {
+  position: absolute;
+  left: -16px;
+  top: -25px;
+  width: 32px;
+  height: 44px;
+  filter: drop-shadow(0 0 10px rgb(255 190 90 / 0.7));
+}
+.find-stage:not([data-phase="search"]) .find-lantern {
+  opacity: 0;
+}
+@media (pointer: coarse) {
+  .find-lantern svg {
+    display: none;
+  }
+}
+
+/* Reveal */
+.find-reveal-art {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--reveal-size, 140px);
+  /* SAHUR_ANCHOR (100, 112) of the 210 × 260 viewBox sits on the hiding spot. */
+  transform: translate(-47.6%, -43.1%);
+}
+.find-reveal-art::before {
+  content: "";
+  position: absolute;
+  inset: -35%;
+  background: radial-gradient(circle, rgb(255 181 71 / 0.5), transparent 62%);
+  animation: find-glow 1s ease-out both;
+}
+.find-reveal-art svg {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: 50% 95%;
+  filter: drop-shadow(0 12px 24px rgb(0 0 0 / 0.55));
+  animation: find-pop 560ms cubic-bezier(0.2, 1.5, 0.4, 1) both;
+}
+.find-burst {
+  position: absolute;
+  left: 0;
+  top: calc(var(--reveal-size, 140px) * -0.72);
+  display: flex;
+  gap: 0.28em;
+  white-space: nowrap;
+  font-size: clamp(18px, calc(var(--reveal-size, 140px) * 0.17), 28px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  text-shadow: 0 2px 14px rgb(0 0 0 / 0.75);
+  transform: translateX(calc(-50% + var(--burst-shift, 0px)));
+}
+.find-burst span {
+  animation: find-word-in 320ms cubic-bezier(0.2, 1.6, 0.4, 1) both;
+}
+.find-burst span:nth-child(2) {
+  animation-delay: 110ms;
+}
+.find-burst span:nth-child(3) {
+  animation-delay: 220ms;
+}
+.find-burst span:nth-child(4) {
+  color: var(--color-lantern);
+  animation-delay: 380ms;
+}
+
+/* Decoy pot */
+.find-pot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  justify-items: center;
+  width: 64px;
+  transform: translate(-50%, -50%);
+}
+.find-pot svg {
+  width: 56px;
+  height: auto;
+}
+.find-pot span {
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: #c9d0de;
+}
+
+.find-flash {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 120px 30px rgb(255 77 77 / 0.45);
+}
+
+/* Floating words and score popups */
+.find-fx {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.find-word {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--color-body);
+  will-change: transform, opacity;
+}
+.find-word.is-hot {
+  color: var(--color-lantern);
+  text-shadow: 0 0 12px rgb(255 181 71 / 0.5);
+}
+.find-pop {
+  position: absolute;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  text-shadow: 0 2px 10px rgb(0 0 0 / 0.75);
+}
+.find-pop strong {
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.find-pop span {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-body);
+}
+.find-pop.is-gold strong {
+  color: var(--color-ship-end);
+}
+.find-pop.is-bad strong {
+  font-size: 22px;
+  color: var(--color-error);
+}
+
+/* HUD */
+.find-hud {
+  position: absolute;
+  inset: 0 0 auto;
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) 0
+    max(12px, env(safe-area-inset-left));
+  pointer-events: none;
+}
+.find-hud > * {
+  pointer-events: auto;
+  cursor: default;
+}
+.find-hud-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+.find-glass {
+  border: 1px solid var(--color-hairline);
+  background-color: rgb(7 8 15 / 0.74);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.find-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.find-sep {
+  width: 1px;
+  height: 14px;
+  background-color: var(--color-hairline);
+}
+.find-icon-btn {
+  color: var(--color-ink);
+}
+.find-icon-btn:hover {
+  background-color: var(--color-raised);
+}
+.find-icon-btn[aria-pressed="false"] {
+  color: var(--color-mute);
+}
+.find-icon-btn[aria-pressed="true"] .icon-off,
+.find-icon-btn[aria-pressed="false"] .icon-on {
+  display: none;
+}
+
+.find-dawn-track {
+  width: min(100%, 520px);
+  height: 4px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background-color: rgb(255 255 255 / 0.1);
+}
+.find-dawn-bar {
+  height: 100%;
+  transform-origin: left;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--color-develop-start), var(--color-preview-start));
+}
+.find-dawn-track.is-low .find-dawn-bar {
+  background: linear-gradient(90deg, var(--color-ship-start), var(--color-ship-end));
+  animation: find-blink 1s ease-in-out infinite;
+}
+
+.find-heat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: min(100%, 320px);
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 9999px;
+}
+.find-heat-track {
+  position: relative;
+  flex: 1;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #3d8bff, #ffb547 60%, #ff4d4d);
+}
+.find-heat-bar {
+  position: absolute;
+  inset: 0;
+  transform-origin: right;
+  background-color: #2a2e3d;
+}
+.find-heat.is-on {
+  border-color: rgb(255 181 71 / 0.6);
+  color: var(--color-lantern);
+}
+
+.find-blocked {
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid rgb(255 181 71 / 0.35);
+  border-radius: 9999px;
+  background-color: var(--color-lantern-soft);
+  color: var(--color-lantern);
+  font-size: 13px;
+  font-weight: 500;
+}
+.find-blocked:not(:disabled) {
+  cursor: pointer;
+}
+
+.find-splash {
+  position: absolute;
+  left: 50%;
+  top: calc(max(12px, env(safe-area-inset-top)) + 104px);
+  width: min(92%, 420px);
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.find-coach {
+  position: absolute;
+  left: 50%;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  width: min(92%, 480px);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: var(--color-body);
+  text-align: center;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+/* Pause and result panels */
+.find-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  background-color: rgb(3 4 10 / 0.5);
+  cursor: default;
+}
+.find-panel {
+  width: min(100%, 400px);
+  padding: 28px 24px 24px;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+  background-color: rgb(14 16 25 / 0.94);
+  box-shadow: var(--shadow-float);
+  text-align: center;
+  animation: find-rise 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+/* Short landscape screens: headline on the left, details and actions on the right. */
+@media (max-height: 520px) and (min-width: 560px) {
+  .find-result {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+    align-items: center;
+    gap: 24px;
+    width: min(100%, 760px);
+    padding: 20px;
+  }
+  .find-result .find-result-title {
+    font-size: 40px;
+    line-height: 44px;
+  }
+  .find-result-body > :first-child {
+    margin-top: 0;
+  }
+  .find-result-body > :last-child {
+    margin-top: 16px;
+  }
+}
+
+.find-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-sm);
+}
+.find-stats > div {
+  min-width: 0;
+  padding: 10px 6px;
+}
+.find-stats > div + div {
+  border-left: 1px solid var(--color-hairline);
+}
+
+@keyframes find-pop {
+  from {
+    opacity: 0;
+    transform: translateY(30%) scale(0.2);
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes find-glow {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  30% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+}
+@keyframes find-word-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes find-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes find-blink {
+  50% {
+    opacity: 0.45;
+  }
+}

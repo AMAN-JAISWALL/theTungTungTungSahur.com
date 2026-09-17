@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Sahur from '../components/Sahur.astro';
+import { breadcrumbSchema, type Crumb } from '../lib/schema';
+import { FIND_PATH, SITE } from '../site';
+
+const crumbs: Crumb[] = [
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+];
+
+const principles = [
+  { title: 'Instant Play', body: 'No sign-up, no install and no audio files to download. Games start in a click.' },
+  { title: 'Any Screen', body: 'Built for mouse, touch and keyboard, from small phones to wide monitors.' },
+  { title: 'Everyone Can Play', body: 'Visual cues for playing muted, screen reader announcements and reduced-motion support.' },
+  { title: 'Your Data Stays Put', body: 'Progress lives in your browser. There are no accounts to create.' },
+];
+---
+
+<Layout
+  title="About | The Tung Tung Tung Sahur"
+  description="The Tung Tung Tung Sahur is an independent, fan-made hub of free browser games built around the Tung Tung Tung Sahur meme."
+  path="/about"
+  schema={[breadcrumbSchema(crumbs)]}
+>
+  <PageHeader
+    eyebrow="About"
+    title="A Tiny Game Hub for a Very Loud Log"
+    lead="The Tung Tung Tung Sahur is an independent, fan-made collection of free browser games starring the meme everyone can hear coming."
+    crumbs={crumbs}
+  />
+
+  <div class="mx-auto grid max-w-page gap-12 px-4 py-16 sm:px-6 md:grid-cols-[2fr_1fr] md:py-20">
+    <div class="space-y-12">
+      <section aria-labelledby="why-title">
+        <h2 id="why-title" class="text-heading-md">Why This Exists</h2>
+        <div class="mt-4 space-y-4 text-body">
+          <p>
+            The meme is all about sound: a wooden drummer knocking “tung tung tung” before dawn. That makes it a perfect fit
+            for games you play with your ears as much as your eyes.
+          </p>
+          <p>
+            The first game, <a class="link" href={FIND_PATH}>Find Tung Tung Tung Sahur</a>, takes the classic audio
+            hide-and-seek idea somewhere new: a dark village, a lantern, wandering drummers, pot-banging decoys and a race
+            against sunrise.
+          </p>
+        </div>
+      </section>
+
+      <section aria-labelledby="principles-title">
+        <h2 id="principles-title" class="text-heading-md">What Matters Here</h2>
+        <ul class="mt-5 grid gap-px overflow-hidden rounded-md border border-hairline bg-hairline sm:grid-cols-2">
+          {
+            principles.map((p) => (
+              <li class="bg-canvas p-5">
+                <h3 class="text-label">{p.title}</h3>
+                <p class="mt-1 text-sm text-body">{p.body}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section aria-labelledby="made-title">
+        <h2 id="made-title" class="text-heading-md">How It’s Made</h2>
+        <p class="mt-4 text-body">
+          Every drawing on this site is original. Every knock, klang and fanfare is synthesized live with the Web Audio
+          API, so there’s nothing to download and the first sound plays instantly.
+        </p>
+      </section>
+
+      <section aria-labelledby="disclaimer-title">
+        <h2 id="disclaimer-title" class="text-heading-md">Disclaimer</h2>
+        <p class="mt-4 text-body">
+          <span translate="no">{SITE.name}</span> is an unofficial fan project. It isn’t affiliated with or endorsed by the
+          creators of the Tung Tung Tung Sahur meme or any other game.
+        </p>
+      </section>
+
+      <a href={`${FIND_PATH}#play`} class="btn btn-pill btn-primary">Play Find Tung Tung Tung Sahur</a>
+    </div>
+
+    <div class="relative hidden md:block" aria-hidden="true">
+      <div class="sticky top-24 grid place-items-center rounded-lg border border-hairline bg-elevated p-10">
+        <div class="absolute inset-0 rounded-lg bg-[radial-gradient(circle_at_50%_45%,rgb(255_181_71/0.16),transparent_60%)]"></div>
+        <Sahur class="relative w-40" />
+      </div>
+    </div>
+  </div>
+</Layout>

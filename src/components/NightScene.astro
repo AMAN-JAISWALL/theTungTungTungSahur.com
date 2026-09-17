@@ -1,0 +1,38 @@
+---
+/** Night village backdrop: sky, stars, moon and skyline. Purely decorative. */
+import { makeStars, MOON_PATH, SKYLINE_VIEWBOX, skylineMarkup } from '../lib/art';
+import { hashString } from '../lib/random';
+
+interface Props {
+  /** Unique per page; seeds the stars and scopes SVG gradient ids. */
+  id: string;
+  class?: string;
+  stars?: number;
+  moon?: boolean;
+}
+
+const { id, class: className, stars = 64, moon = true } = Astro.props;
+const starList = makeStars(stars, hashString(id));
+---
+
+<div class:list={['night-scene', className]} aria-hidden="true">
+  <div class="night-stars">
+    {
+      starList.map((s) => (
+        <i
+          class:list={['star', { twinkle: s.twinkle }]}
+          style={`left:${s.x}%;top:${s.y}%;--s:${s.size}px;--o:${s.opacity};--d:${s.delay}s`}
+        />
+      ))
+    }
+  </div>
+  {
+    moon && (
+      <svg class="night-moon" viewBox="-44 -44 88 88">
+        <path d={MOON_PATH} fill="#f4ead2" />
+      </svg>
+    )
+  }
+  <svg class="night-skyline" viewBox={SKYLINE_VIEWBOX} preserveAspectRatio="xMidYMax slice" set:html={skylineMarkup(id)} />
+  <slot />
+</div>

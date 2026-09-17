@@ -1,0 +1,75 @@
+---
+import { FIND_PATH, NAV, SITE } from '../site';
+import Logo from './Logo.astro';
+---
+
+<header class="sticky top-0 z-40 border-b border-hairline bg-canvas/80 backdrop-blur-md">
+  <nav aria-label="Main" class="mx-auto flex h-14 max-w-page items-center gap-2 px-4 sm:px-6">
+    <a href="/" class="-ml-1 flex min-w-0 items-center gap-2.5 rounded-sm px-1 py-1">
+      <Logo class="size-7 shrink-0" />
+      <span class="truncate text-sm font-semibold tracking-[-0.4px] sm:text-[15px]" translate="no">{SITE.name}</span>
+    </a>
+
+    <ul class="ml-6 hidden items-center gap-1 md:flex">
+      {
+        NAV.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="rounded-full px-3 py-2 text-sm text-body transition-colors hover:bg-hairline-soft hover:text-ink"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="ml-auto flex shrink-0 items-center gap-2">
+      <a href={`${FIND_PATH}#play`} class="btn btn-app btn-primary">
+        <span class="sm:hidden">Play</span><span class="hidden sm:inline">Play Now</span>
+      </a>
+      <details class="relative md:hidden" data-menu>
+        <summary
+          class="btn btn-app btn-secondary w-9 list-none px-0 pointer-coarse:w-11 [&::-webkit-details-marker]:hidden"
+          aria-label="Menu"
+        >
+          <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16"></path>
+          </svg>
+        </summary>
+        <ul class="absolute top-12 right-0 w-52 rounded-md bg-elevated p-1 shadow-float">
+          {
+            NAV.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="block rounded-sm px-3 py-3 text-sm text-body hover:bg-hairline-soft hover:text-ink"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </details>
+    </div>
+  </nav>
+</header>
+
+<script>
+  // Close the mobile menu after a link is chosen or when tapping outside it.
+  const menu = document.querySelector<HTMLDetailsElement>('[data-menu]');
+  if (menu) {
+    menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => (menu.open = false)));
+    document.addEventListener('click', (event) => {
+      if (menu.open && !menu.contains(event.target as Node)) menu.open = false;
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && menu.open) {
+        menu.open = false;
+        menu.querySelector('summary')?.focus();
+      }
+    });
+  }
+</script>

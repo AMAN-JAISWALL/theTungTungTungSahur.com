@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://thetungtungtungsahur.com/sitemap-index.xml
