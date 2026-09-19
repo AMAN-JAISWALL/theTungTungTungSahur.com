@@ -10,6 +10,12 @@ export const SITE = {
 /** The one inbox for the whole site: feedback, bugs, rights queries. Published on /contact. */
 export const CONTACT_EMAIL = 'hello@thetungtungtungsahur.com';
 
+/** Google Analytics 4 measurement ID, loaded from Layout.astro on production builds only. */
+export const GA_ID = 'G-SPP2KNNLRK';
+
+/** Microsoft Clarity project ID — heatmaps and session replay, production builds only. */
+export const CLARITY_ID = 'ykr6bd9ih6';
+
 export const FIND_PATH = '/games/find-tung-tung-tung-sahur';
 /** The entity page explaining the meme itself. */
 export const LORE_PATH = '/tung-tung-tung-sahur';
@@ -19,6 +25,34 @@ export const ABOUT_PATH = '/about';
 export const CONTACT_PATH = '/contact';
 export const PRIVACY_PATH = '/privacy';
 export const TERMS_PATH = '/terms';
+
+/**
+ * Sitemap metadata per route, consumed by /sitemap.xml.
+ *
+ * `lastmod` is the date a page's content last changed in a way worth recrawling. Bump it by hand
+ * when you meaningfully edit a page — never on every build. Search engines only honour `lastmod`
+ * while it stays verifiably accurate, and a date that moves whenever the site is rebuilt teaches
+ * them to ignore the field entirely.
+ *
+ * Routes are discovered from the filesystem, so a new page still appears here without being
+ * listed; it just falls back to {@link SITEMAP_FALLBACK_PRIORITY} and carries no `lastmod`.
+ */
+export const ROUTE_META: Record<string, { priority: number; lastmod: string }> = {
+  '/': { priority: 1.0, lastmod: '2026-09-19' },
+  [FIND_PATH]: { priority: 0.9, lastmod: '2026-09-18' },
+  [LORE_PATH]: { priority: 0.8, lastmod: '2026-09-18' },
+  [FAQ_PATH]: { priority: 0.8, lastmod: '2026-09-18' },
+  '/games': { priority: 0.7, lastmod: '2026-09-18' },
+  [ABOUT_PATH]: { priority: 0.5, lastmod: '2026-09-19' },
+  [CONTACT_PATH]: { priority: 0.5, lastmod: '2026-09-19' },
+  [PRIVACY_PATH]: { priority: 0.3, lastmod: '2026-09-19' },
+  [TERMS_PATH]: { priority: 0.3, lastmod: '2026-09-18' },
+};
+
+export const SITEMAP_FALLBACK_PRIORITY = 0.4;
+
+/** Served in place of a URL rather than crawled to, so they stay out of the sitemap. */
+export const SITEMAP_EXCLUDED = ['/404', '/500'];
 
 export const NAV = [
   { href: '/games', label: 'Games' },
@@ -49,7 +83,7 @@ export const SITE_PAGES = [
     href: PRIVACY_PATH,
     label: 'Privacy Policy',
     legal: true,
-    blurb: 'What’s stored and where: your progress stays in your browser. No accounts, no tracking.',
+    blurb: 'What’s stored and where: your progress stays in your browser, plus which analytics the site uses.',
   },
   {
     href: TERMS_PATH,

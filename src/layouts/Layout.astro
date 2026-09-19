@@ -4,7 +4,7 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { pageGraph, type Crumb, type PageGraphOptions, type QuestionAnswer } from '../lib/schema';
-import { SITE } from '../site';
+import { CLARITY_ID, GA_ID, SITE } from '../site';
 
 interface Props {
   /** Full document title. */
@@ -90,7 +90,7 @@ const graph = noindex
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2" />
     <meta name="apple-mobile-web-app-title" content="Sahur" />
     <link rel="manifest" href="/site.webmanifest?v=2" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="sitemap" href="/sitemap.xml" />
 
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={SITE.name} />
@@ -111,6 +111,36 @@ const graph = noindex
 
     <Font cssVariable="--font-geist" preload={[{ weight: '400' }, { weight: '600' }]} />
     <Font cssVariable="--font-geist-mono" />
+
+    {
+      /* Google Analytics — production only, so local dev doesn't show up in the reports. */
+      import.meta.env.PROD && (
+        <Fragment>
+          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
+          <script
+            is:inline
+            set:html={`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_ID}');`}
+          />
+        </Fragment>
+      )
+    }
+
+    {
+      /* Microsoft Clarity — heatmaps and session replay, production only for the same reason. */
+      import.meta.env.PROD && (
+        <script
+          is:inline
+          set:html={`(function(c,l,a,r,i,t,y){
+c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "${CLARITY_ID}");`}
+        />
+      )
+    }
 
     {
       graph.length > 0 && (
